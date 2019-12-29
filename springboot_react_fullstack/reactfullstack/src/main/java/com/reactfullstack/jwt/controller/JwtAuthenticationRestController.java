@@ -1,5 +1,10 @@
-package com.reactfullstack.jwt;
+package com.reactfullstack.jwt.controller;
 
+import com.reactfullstack.jwt.JwtTokenUtil;
+import com.reactfullstack.jwt.JwtUserDetails;
+import com.reactfullstack.jwt.exception.AuthenticationException;
+import com.reactfullstack.jwt.model.JwtTokenRequest;
+import com.reactfullstack.jwt.model.JwtTokenResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -31,21 +36,36 @@ public class JwtAuthenticationRestController {
     @Autowired
     private UserDetailsService jwtInMemoryUserDetailsService;
 
-    @RequestMapping(value = "${jwt.get.token.uri}", method = RequestMethod.POST)
+    @PostMapping(value = "${jwt.get.token.uri}")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtTokenRequest authenticationRequest)
             throws AuthenticationException {
 
+        /**
+         * 1. Authenticate username and password
+         */
         authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
 
+        /**
+         * 2. Get username and password from the DB and create UserDetails From it
+         * OR
+         * In our case we have used inMemory
+         */
         final UserDetails userDetails = jwtInMemoryUserDetailsService.loadUserByUsername(authenticationRequest.getUsername());
 
+        /**
+         * 3. Generate token with the above UserDetails
+         */
         final String token = jwtTokenUtil.generateToken(userDetails);
 
+        /**
+         * 4. Returning Token as JSON
+         */
         return ResponseEntity.ok(new JwtTokenResponse(token));
     }
 
-    @RequestMapping(value = "${jwt.refresh.token.uri}", method = RequestMethod.GET)
+    @GetMapping(value = "${jwt.refresh.token.uri}")
     public ResponseEntity<?> refreshAndGetAuthenticationToken(HttpServletRequest request) {
+
         String authToken = request.getHeader(tokenHeader);
         final String token = authToken.substring(7);
         String username = jwtTokenUtil.getUsernameFromToken(token);

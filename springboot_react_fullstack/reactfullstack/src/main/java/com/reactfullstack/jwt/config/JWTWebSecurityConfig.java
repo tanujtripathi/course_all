@@ -1,5 +1,7 @@
-package com.reactfullstack.jwt;
+package com.reactfullstack.jwt.config;
 
+import com.reactfullstack.jwt.JwtTokenAuthorizationOncePerRequestFilter;
+import com.reactfullstack.jwt.JwtUnAuthorizedResponseAuthenticationEntryPoint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
