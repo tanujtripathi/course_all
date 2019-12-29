@@ -1,0 +1,2 @@
+Message sent from arduino to computer are through: TX->1  (T is Transmitter)
+Message sent from computer to arduino are through: RX<-1  (T is Receiver)

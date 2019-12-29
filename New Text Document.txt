@@ -1,0 +1,53 @@
+ipub is having two components
+1. Strategic : Mgmt notification(MEM) system was migrated to strategic
+2. Legacy: chess was migrated to Ipub Legacy
+
+=> Legacy(binary format)(CSS, CAMS, COSMOS): we have a publisher like mainframe systems, data which is shared by the mainfranme system, it is persisted by IPUB Legacy systems and further to the downstreams
+ 			Order related(Huge list)
+			MQ interface is only there with mainframe system(MQ Protocol).
+
+=> Strategic: Message in XML format(All the processing is happening in XML format in case of Strategic)
+	      It supports have a publisher which supports MQ, JMS, HTTP
+
+=> There is a internal communication between strategic and Legacy systems.
+
+=> IPub is a middleware
+
+=> In Strategic we are supporting SOAP envelope(XML).
+
+=> We have a subscription based on the static or the dynamic way.
+	static: Most of the time Topic based subscription where IPUB ASG will do the sunscription on behalf of consumers.
+	dynamic: COnsumers can send the subscription request to the IPUB.	
+
+=> filteration: when a subscriber wants any particular information, it registers with Ipub with that information and if any
+		publisher is present which is matching that particular request then IPUB send the info to subscriber using 
+		the below filteration techniques in Strategic.
+1. Topic based
+2. MEN01 (more than on filter)
+3. MEN02 (Single filter)
+4. IPUB01 (Topic based,(we are curr not using)
+
+=> In Legacy the events is regarding Orders. It will generate the new order and the trigger will be happening in CSS and receieved in IPUB.
+=> In strategic very small messages in XML format.
+
+IPUB converts Binary to TLV, XML etc in case of Legacy
+IPUB converts XML to XML(Header will be different) etc in case of Legacy
+
+IPUB =  It is a dual site architecture.
+	Production have 4 large boxes(24 core, 128gb)
+	Each sites has dedicated DAAS instance.
+	Load balancing happens through GSS(Global Site selector) and ACE switches at each site that ensures further Load balancin
+	at each site.
+
+JMS trafiic is load balanced by two IPUB sites by using 2 2 weblogic jms bridges each pointing to one site.
+
+Two repositories are there:
+1. Database
+2. MQ Repository: This is only in the case od Strategic and not in Legacy. In Legacy everything is in code level.
+
+In MQ repository: if one publisher has to send the event info to more than 1 subscriber, that information is in the MQ Repo.
+
+IPUB Haas inserts the data into IPUB database (Legacy).
+	
+		
+
