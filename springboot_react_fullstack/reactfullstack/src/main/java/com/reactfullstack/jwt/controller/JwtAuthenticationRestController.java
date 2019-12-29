@@ -8,6 +8,7 @@ import com.reactfullstack.jwt.model.JwtTokenResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -21,7 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Objects;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "http://localhost:3000")
 public class JwtAuthenticationRestController {
 
     @Value("${jwt.http.request.header}")
@@ -36,7 +37,7 @@ public class JwtAuthenticationRestController {
     @Autowired
     private UserDetailsService jwtInMemoryUserDetailsService;
 
-    @PostMapping(value = "${jwt.get.token.uri}")
+    @RequestMapping(value = "${jwt.get.token.uri}", method = RequestMethod.POST)
     public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtTokenRequest authenticationRequest)
             throws AuthenticationException {
 
