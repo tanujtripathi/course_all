@@ -1,4 +1,4 @@
-import GetRequestService from "../actions/AuthenticateService";
+import AuthenticateService from "../actions/AuthenticateService";
 
 class AuthenticateUser {
 
@@ -6,7 +6,14 @@ class AuthenticateUser {
         let basicAuthHeader = 'Basic ' + window.btoa(username + ':' + password);
         sessionStorage.setItem('authenticatedUser', username);
 
-        GetRequestService.setUpAxiosInterceptors(basicAuthHeader);
+        AuthenticateService.setUpAxiosInterceptors(basicAuthHeader);
+    }
+
+    storeLoginDetailsForJWT(username, token) {
+        let jwtToken = 'Bearer ' + token;
+        sessionStorage.setItem('authenticatedUser', username);
+
+        AuthenticateService.setUpAxiosInterceptors(jwtToken);
     }
 
     logout() {

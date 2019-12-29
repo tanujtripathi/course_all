@@ -11,6 +11,7 @@ class Login extends React.Component {
         password: '',
         loginSuccess: false,
         invalidCredentials: false,
+        invalidJwtToken: false
     }
 
     getAllTodos = () => {
@@ -41,19 +42,48 @@ class Login extends React.Component {
         //     })
         // }
 
-        AuthenticateService.authenticateUser(this.state.username, this.state.password)
-            .then(() => {
-                AuthenticateUser.storeLoginDetails(this.state.username, this.state.password)
-                this.getAllTodos();
-                this.setState({
-                    loginSuccess: true
+        /**
+         * For basic auth
+         */
+        if (this.state.username === 'tanuj' && this.state.password === 'tanuj') {
+            AuthenticateService.authenticateUser(this.state.username, this.state.password)
+                .then(() => {
+                    AuthenticateUser.storeLoginDetails(this.state.username, this.state.password)
+                    this.getAllTodos();
+                    this.setState({
+                        loginSuccess: true
+                    })
                 })
-            })
-            .catch(() => {
-                this.setState({
-                    invalidCredentials: true
+                .catch(() => {
+                    this.setState({
+                        invalidCredentials: true
+                    })
                 })
+        }
+
+        /**
+         * For JWT
+         */
+        else if (this.state.username === 'tanuj' && this.state.password === 'dummy') {
+            AuthenticateService.authenticateUserWithJWT(this.state.username, this.state.password)
+                .then(response => {
+                    AuthenticateUser.storeLoginDetailsForJWT(this.state.username, response.data.token)
+                    this.getAllTodos();
+                    this.setState({
+                        loginSuccess: true
+                    })
+                })
+                .catch(() => {
+                    this.setState({
+                        invalidCredentials: true
+                    })
+                })
+        }
+        else {
+            this.setState({
+                invalidCredentials: true
             })
+        }
     }
 
     render() {
@@ -64,6 +94,9 @@ class Login extends React.Component {
 
                 {/* Success message if the login is successful */}
                 {this.state.loginSuccess && <div>Login Successful</div>}
+
+                {/* Error message if the login is failed */}
+                {this.state.invalidJwtToken && <div>Invalid Token</div>}
 
                 {/* Login form */}
                 <Form>

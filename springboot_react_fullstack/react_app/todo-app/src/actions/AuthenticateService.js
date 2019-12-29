@@ -15,7 +15,8 @@ class AuthenticateService {
         )
     }
 
-    // Hits Backend to authenticate user 
+    
+    // Hits Backend to authenticate user with basic auth
     authenticateUser(username, password) {
         let basicAuthHeader = 'Basic ' + window.btoa(username + ':' + password)
         const GET_URL = 'http://localhost:8080/authenticate';
@@ -23,6 +24,14 @@ class AuthenticateService {
             headers: {
                 authorization: basicAuthHeader
             }
+        })
+    }
+
+    // Hits Backend to authenticate user with JWT
+    authenticateUserWithJWT(username, password) {
+        const POST_URL = 'http://localhost:8080/authenticateWithJwt';
+        return axios.post(POST_URL, {
+            username, password
         })
     }
 }
