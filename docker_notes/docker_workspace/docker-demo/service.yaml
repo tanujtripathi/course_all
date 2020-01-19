@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: "2020-01-13T09:27:51Z"
+  labels:
+    app: hello-world
+  name: hello-world
+  namespace: default
+  resourceVersion: "27075"
+  selfLink: /api/v1/namespaces/default/services/hello-world
+  uid: f86dd734-35e6-11ea-9ebd-42010a800114
+spec:
+  clusterIP: 10.0.8.144
+  externalTrafficPolicy: Cluster
+  ports:
+  - nodePort: 32239
+    port: 8080
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: hello-world
+  sessionAffinity: None
+  type: LoadBalancer
+status:
+  loadBalancer:
+    ingress:
+    - ip: 35.239.148.212
