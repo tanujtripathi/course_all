@@ -1,14 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="5b73a7c0-98fd-48ab-8479-5dff2ff89995" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../../../Kubernetes.docx" beforeDir="false" afterPath="$PROJECT_DIR$/../../../Kubernetes.docx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../../springboot_react_fullstack/reactfullstack/src/main/java/com/reactfullstack/jwt/JwtTokenUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../springboot_react_fullstack/reactfullstack/src/main/java/com/reactfullstack/jwt/JwtTokenUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../../springboot_react_fullstack/reactfullstack/src/main/java/com/reactfullstack/jwt/config/JWTWebSecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../springboot_react_fullstack/reactfullstack/src/main/java/com/reactfullstack/jwt/config/JWTWebSecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../../springboot_react_fullstack/reactfullstack/src/main/java/com/reactfullstack/jwt/controller/JwtAuthenticationRestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../springboot_react_fullstack/reactfullstack/src/main/java/com/reactfullstack/jwt/controller/JwtAuthenticationRestController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../../springboot_react_fullstack/springboot_react_fullstack.docx" beforeDir="false" afterPath="$PROJECT_DIR$/../../../springboot_react_fullstack/springboot_react_fullstack.docx" afterDir="false" />
-    </list>
+    <list default="true" id="5b73a7c0-98fd-48ab-8479-5dff2ff89995" name="Default Changelist" comment="" />
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
