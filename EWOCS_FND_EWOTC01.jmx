@@ -1,0 +1,1858 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jmeterTestPlan version="1.2" properties="5.0" jmeter="5.0 r1840935">
+  <hashTree>
+    <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="EWOCS_CREATE_AMEND_CANCEL" enabled="true">
+      <stringProp name="TestPlan.comments"></stringProp>
+      <boolProp name="TestPlan.functional_mode">false</boolProp>
+      <boolProp name="TestPlan.tearDown_on_shutdown">true</boolProp>
+      <boolProp name="TestPlan.serialize_threadgroups">true</boolProp>
+      <elementProp name="TestPlan.user_defined_variables" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+        <collectionProp name="Arguments.arguments"/>
+      </elementProp>
+      <stringProp name="TestPlan.user_define_classpath"></stringProp>
+    </TestPlan>
+    <hashTree>
+      <SetupThreadGroup guiclass="SetupThreadGroupGui" testclass="SetupThreadGroup" testname="EWOCS_TC01 Thread" enabled="true">
+        <stringProp name="ThreadGroup.on_sample_error">stoptestnow</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+          <stringProp name="LoopController.loops">1</stringProp>
+        </elementProp>
+        <stringProp name="ThreadGroup.num_threads">1</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">1</stringProp>
+        <boolProp name="ThreadGroup.scheduler">false</boolProp>
+        <stringProp name="ThreadGroup.duration"></stringProp>
+        <stringProp name="ThreadGroup.delay"></stringProp>
+      </SetupThreadGroup>
+      <hashTree>
+        <JDBCDataSource guiclass="TestBeanGUI" testclass="JDBCDataSource" testname="METB JDBC Connection Configuration" enabled="true">
+          <boolProp name="autocommit">true</boolProp>
+          <stringProp name="checkQuery">select 1 from dual</stringProp>
+          <stringProp name="connectionAge">5000</stringProp>
+          <stringProp name="dataSource">METB</stringProp>
+          <stringProp name="dbUrl">jdbc:oracle:thin:@bcd07356007-scan-oravip.dci.bt.com:61901/ordb4d_any</stringProp>
+          <stringProp name="driver">oracle.jdbc.OracleDriver</stringProp>
+          <boolProp name="keepAlive">true</boolProp>
+          <stringProp name="password">ORmetb#3</stringProp>
+          <stringProp name="poolMax">10</stringProp>
+          <stringProp name="timeout">10000</stringProp>
+          <stringProp name="transactionIsolation">DEFAULT</stringProp>
+          <stringProp name="trimInterval">60000</stringProp>
+          <stringProp name="username">ormetb</stringProp>
+        </JDBCDataSource>
+        <hashTree/>
+        <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="EWOCS_User Defined Variables" enabled="true">
+          <collectionProp name="Arguments.arguments">
+            <elementProp name="created_create" elementType="Argument">
+              <stringProp name="Argument.name">created_create</stringProp>
+              <stringProp name="Argument.value">NO</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="created_amend" elementType="Argument">
+              <stringProp name="Argument.name">created_amend</stringProp>
+              <stringProp name="Argument.value">NO</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="created_cancel" elementType="Argument">
+              <stringProp name="Argument.name">created_cancel</stringProp>
+              <stringProp name="Argument.value">NO</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="taskExists" elementType="Argument">
+              <stringProp name="Argument.name">taskExists</stringProp>
+              <stringProp name="Argument.value">NO</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="globalTaskId" elementType="Argument">
+              <stringProp name="Argument.name">globalTaskId</stringProp>
+              <stringProp name="Argument.value"></stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="globalTaskType" elementType="Argument">
+              <stringProp name="Argument.name">globalTaskType</stringProp>
+              <stringProp name="Argument.value"></stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="globalProduct" elementType="Argument">
+              <stringProp name="Argument.name">globalProduct</stringProp>
+              <stringProp name="Argument.value"></stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+          </collectionProp>
+        </Arguments>
+        <hashTree/>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="EWOCS_Check METB SANITY CHECK CONFIG" enabled="true">
+          <stringProp name="TestPlan.comments">Fetch METB Configuration</stringProp>
+          <stringProp name="dataSource">METB</stringProp>
+          <stringProp name="query">SELECT * FROM METB_ART_CONFIG WHERE testid=&apos;EWOTC01&apos;</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="queryType">Select Statement</stringProp>
+          <stringProp name="resultSetHandler">Store as Object</stringProp>
+          <stringProp name="resultVariable">sanityCheckConfig</stringProp>
+          <stringProp name="variableNames"></stringProp>
+        </JDBCSampler>
+        <hashTree>
+          <BeanShellAssertion guiclass="BeanShellAssertionGui" testclass="BeanShellAssertion" testname="BeanShell Assertion" enabled="true">
+            <stringProp name="BeanShellAssertion.query">try {
+	if(vars.getObject(&quot;sanityCheckConfig&quot;).size() != 0) {
+	String taskId = vars.getObject(&quot;sanityCheckConfig&quot;).get(0).get(&quot;TASK_ID&quot;);
+	String taskType = vars.getObject(&quot;sanityCheckConfig&quot;).get(0).get(&quot;TASK_TYPE&quot;);
+	String product = vars.getObject(&quot;sanityCheckConfig&quot;).get(0).get(&quot;PRODUCT&quot;);
+	String request_Type = vars.getObject(&quot;sanityCheckConfig&quot;).get(0).get(&quot;REQUEST_TYPE&quot;);
+	vars.put(&quot;taskId&quot;,taskId);
+	vars.put(&quot;taskType&quot;,taskType);
+	vars.put(&quot;product&quot;,product);
+	vars.put(&quot;request_Type&quot;,request_Type);
+	log.info(&quot;TaskId Value &gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; &quot; + taskId);
+	log.info(&quot;Task Type Value &gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; &quot; + taskType);
+	log.info(&quot;Product Value &gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; &quot; + product);
+	log.info(&quot;request_Type Value &gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; &quot; + request_Type);
+	String overAllDelay = vars.getObject(&quot;sanityCheckConfig&quot;).get(0).get(&quot;OVERALL_DELAY&quot;);
+	vars.put(&quot;overAllDelay&quot;,overAllDelay);
+	log.info(&quot;overAllDelay Value &gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; &quot; + overAllDelay);	
+} else {
+	FailureMessage = &quot;FAILED. Please configure TEST CONFIGURATIONS for EWOCS in METB_ART_CONFIG&quot;;
+	Failure = true;	
+	prev.setStopThread(true); 
+}
+}
+catch (Throwable ex) {
+    log.error(&quot;Error in Beanshell&quot;, ex);
+    throw ex;
+}</stringProp>
+            <stringProp name="BeanShellAssertion.filename"></stringProp>
+            <stringProp name="BeanShellAssertion.parameters"></stringProp>
+            <boolProp name="BeanShellAssertion.resetInterpreter">true</boolProp>
+          </BeanShellAssertion>
+          <hashTree/>
+          <ResultAction guiclass="ResultActionGui" testclass="ResultAction" testname="Result Status Action Handler" enabled="true">
+            <intProp name="OnError.action">2</intProp>
+          </ResultAction>
+          <hashTree/>
+        </hashTree>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="EWOCS_Check _IF_TASK_EXISTS" enabled="true">
+          <stringProp name="TestPlan.comments">Check if Task Exists</stringProp>
+          <stringProp name="dataSource">METB</stringProp>
+          <stringProp name="query">SELECT * FROM TASKDETAILS WHERE TASK_REF_NUMBER=&apos;${taskId}&apos;</stringProp>
+          <stringProp name="queryArguments"></stringProp>
+          <stringProp name="queryArgumentsTypes"></stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="queryType">Select Statement</stringProp>
+          <stringProp name="resultSetHandler">Store as Object</stringProp>
+          <stringProp name="resultVariable">existingTask</stringProp>
+          <stringProp name="variableNames"></stringProp>
+        </JDBCSampler>
+        <hashTree>
+          <BeanShellAssertion guiclass="BeanShellAssertionGui" testclass="BeanShellAssertion" testname="BeanShell Assertion" enabled="true">
+            <stringProp name="BeanShellAssertion.query">try {
+	if(vars.getObject(&quot;existingTask&quot;).size() != 0) {
+	String met_ref_number = vars.getObject(&quot;existingTask&quot;).get(0).get(&quot;MET_REF_NUMBER&quot;);
+	vars.put(&quot;met_ref_number&quot;,met_ref_number);
+	vars.put(&quot;taskExists&quot;,&quot;YES&quot;);
+	log.info(&quot;Task Exists &gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; &quot; + vars.get(&quot;met_ref_number&quot;));
+} else {
+	log.info(&quot;TASK DOES NOT EXIST....CONTINUE&quot;);
+	vars.put(&quot;taskExists&quot;,&quot;NO&quot;);
+}
+}
+catch (Throwable ex) {
+    log.error(&quot;Error in Beanshell&quot;, ex);
+    throw ex;
+}</stringProp>
+            <stringProp name="BeanShellAssertion.filename"></stringProp>
+            <stringProp name="BeanShellAssertion.parameters"></stringProp>
+            <boolProp name="BeanShellAssertion.resetInterpreter">true</boolProp>
+          </BeanShellAssertion>
+          <hashTree/>
+          <ResultAction guiclass="ResultActionGui" testclass="ResultAction" testname="Result Status Action Handler" enabled="true">
+            <intProp name="OnError.action">2</intProp>
+          </ResultAction>
+          <hashTree/>
+        </hashTree>
+        <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="EWOCS_CLEANUP EXISTING TASK" enabled="true">
+          <stringProp name="TestPlan.comments">Check if Task Exists</stringProp>
+          <stringProp name="dataSource">METB</stringProp>
+          <stringProp name="query">{call DML_CLEANUP_TASK.DELETE_TASK(?,?)}</stringProp>
+          <stringProp name="queryArguments">${taskId},${met_ref_number}</stringProp>
+          <stringProp name="queryArgumentsTypes">VARCHAR,VARCHAR</stringProp>
+          <stringProp name="queryTimeout"></stringProp>
+          <stringProp name="queryType">Callable Statement</stringProp>
+          <stringProp name="resultSetHandler">Store as Object</stringProp>
+          <stringProp name="resultVariable">response</stringProp>
+          <stringProp name="variableNames"></stringProp>
+        </JDBCSampler>
+        <hashTree/>
+        <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="${request_Type} CREATE TC" enabled="true">
+          <boolProp name="TransactionController.includeTimers">false</boolProp>
+          <boolProp name="TransactionController.parent">true</boolProp>
+        </TransactionController>
+        <hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="EWOCS_GET_CREATE_CONFIG" enabled="true">
+            <stringProp name="TestPlan.comments">Fetch METB Configuration</stringProp>
+            <stringProp name="dataSource">METB</stringProp>
+            <stringProp name="query">SELECT * FROM METB_ART_CONFIG WHERE testid=&apos;EWOTC01&apos;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="queryType">Select Statement</stringProp>
+            <stringProp name="resultSetHandler">Store as Object</stringProp>
+            <stringProp name="resultVariable">sanityCheckConfig</stringProp>
+            <stringProp name="variableNames"></stringProp>
+          </JDBCSampler>
+          <hashTree>
+            <BeanShellAssertion guiclass="BeanShellAssertionGui" testclass="BeanShellAssertion" testname="BeanShell Assertion" enabled="true">
+              <stringProp name="BeanShellAssertion.query">try {
+	if(vars.getObject(&quot;sanityCheckConfig&quot;).size() != 0) {
+	String taskId = vars.getObject(&quot;sanityCheckConfig&quot;).get(0).get(&quot;TASK_ID&quot;);
+	String taskType = vars.getObject(&quot;sanityCheckConfig&quot;).get(0).get(&quot;TASK_TYPE&quot;);
+	String product = vars.getObject(&quot;sanityCheckConfig&quot;).get(0).get(&quot;PRODUCT&quot;);
+	vars.put(&quot;taskId&quot;,taskId);
+	vars.put(&quot;taskType&quot;,taskType);
+	vars.put(&quot;product&quot;,product);
+	${__setProperty(globalTaskId, taskId)};
+	${__setProperty(globalTaskType, taskType)};
+	${__setProperty(globalProduct, product)};
+	log.info(&quot;TaskId Value &gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; &quot; + taskId);
+	log.info(&quot;Task Type Value &gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; &quot; + taskType);
+	log.info(&quot;Product Value &gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; &quot; + product);
+	String overAllDelay = vars.getObject(&quot;sanityCheckConfig&quot;).get(0).get(&quot;OVERALL_DELAY&quot;);
+	vars.put(&quot;overAllDelay&quot;,overAllDelay);
+	log.info(&quot;overAllDelay Value &gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; &quot; + overAllDelay);	
+} else {
+	FailureMessage = &quot;FAILED. Please configure TEST CONFIGURATIONS for EWOCS in METB_ART_CONFIG&quot;;
+	Failure = true;	
+	prev.setStopThread(true); 
+}
+}
+catch (Throwable ex) {
+    log.error(&quot;Error in Beanshell&quot;, ex);
+    throw ex;
+}</stringProp>
+              <stringProp name="BeanShellAssertion.filename"></stringProp>
+              <stringProp name="BeanShellAssertion.parameters"></stringProp>
+              <boolProp name="BeanShellAssertion.resetInterpreter">true</boolProp>
+            </BeanShellAssertion>
+            <hashTree/>
+            <ResultAction guiclass="ResultActionGui" testclass="ResultAction" testname="Result Status Action Handler" enabled="true">
+              <intProp name="OnError.action">2</intProp>
+            </ResultAction>
+            <hashTree/>
+          </hashTree>
+          <com.zeroclue.jmeter.protocol.amqp.AMQPPublisher guiclass="com.zeroclue.jmeter.protocol.amqp.gui.AMQPPublisherGui" testclass="com.zeroclue.jmeter.protocol.amqp.AMQPPublisher" testname="Post_Create_Task_Request" enabled="true">
+            <stringProp name="AMQPSampler.Exchange">SourceExchange</stringProp>
+            <boolProp name="AMQPSampler.ExchangeDurable">true</boolProp>
+            <boolProp name="AMQPSampler.ExchangeAutoDelete">false</boolProp>
+            <boolProp name="AMQPSampler.ExchangeRedeclare">false</boolProp>
+            <stringProp name="AMQPSampler.Queue"></stringProp>
+            <stringProp name="AMQPSampler.RoutingKey"></stringProp>
+            <stringProp name="AMQPSampler.VirtualHost">METBVHOST</stringProp>
+            <stringProp name="AMQPSampler.MessageTTL">604800000</stringProp>
+            <stringProp name="AMQPSampler.MessageExpires"></stringProp>
+            <stringProp name="AMQPSampler.ExchangeType">direct</stringProp>
+            <stringProp name="AMQPSampler.QueueDurable">true</stringProp>
+            <stringProp name="AMQPSampler.QueueExclusive">false</stringProp>
+            <stringProp name="AMQPSampler.QueueAutoDelete">false</stringProp>
+            <boolProp name="AMQPSampler.Redeclare">false</boolProp>
+            <stringProp name="AMQPSampler.Timeout">1000</stringProp>
+            <stringProp name="AMQPSampler.Iterations">1</stringProp>
+            <stringProp name="AMQPSampler.Host">10.54.210.59</stringProp>
+            <stringProp name="AMQPSampler.Port">5672</stringProp>
+            <stringProp name="AMQPSampler.Username">admin</stringProp>
+            <stringProp name="AMQPSampler.Password">password</stringProp>
+            <stringProp name="AMQPSampler.SSL">false</stringProp>
+            <boolProp name="AMQPPublisher.Persistent">false</boolProp>
+            <boolProp name="AMQPPublisher.UseTx">false</boolProp>
+            <stringProp name="AMQPPublisher.MessageRoutingKey">ewocs_to_metb_inb_rkey</stringProp>
+            <stringProp name="AMQPPublisher.Message">&lt;SOAP-ENV:Envelope xmlns:SOAP-ENV=&quot;http://schemas.xmlsoap.org/soap/envelope/&quot; xmlns:SOAP-ENC=&quot;http://schemas.xmlsoap.org/soap/encoding/&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:xsd=&quot;http://www.w3.org/2001/XMLSchema&quot; xmlns:m0=&quot;http://wsi.nat.bt.com/2005/06/StandardHeader/&quot; xmlns:m1=&quot;http://capabilities.nat.bt.com/xsd/ManageEngineeringTask/2008/06/30/CCM/CreateTaskRequest/Activities&quot; xmlns:m2=&quot;http://capabilities.nat.bt.com/xsd/ManageEngineeringTask/2008/06/30/CCM/CreateTaskRequest/Incidents&quot; xmlns:m3=&quot;http://capabilities.nat.bt.com/xsd/ManageEngineeringTask/2008/06/30/CCM/CreateTaskRequest/Agreements&quot; xmlns:m4=&quot;http://capabilities.nat.bt.com/xsd/ManageEngineeringTask/2008/06/30/CCM/CreateTaskRequest/BaseTypes&quot; xmlns:m5=&quot;http://capabilities.nat.bt.com/xsd/ManageEngineeringTask/2008/06/30/CCM/CreateTaskRequest/Portfolio&quot; xmlns:m6=&quot;http://capabilities.nat.bt.com/xsd/ManageEngineeringTask/2008/06/30/CCM/CreateTaskRequest/Services&quot; xmlns:m7=&quot;http://capabilities.nat.bt.com/xsd/ManageEngineeringTask/2008/06/30/CCM/CreateTaskRequest/CoreClasses/Specifications&quot; xmlns:m8=&quot;http://capabilities.nat.bt.com/xsd/ManageEngineeringTask/2008/06/30/CCM/CreateTaskRequest/HR&quot; xmlns:m9=&quot;http://capabilities.nat.bt.com/xsd/ManageEngineeringTask/2008/06/30/CCM/CreateTaskRequest/Scheduling&quot; xmlns:m10=&quot;http://capabilities.nat.bt.com/xsd/ManageEngineeringTask/2008/06/30/CCM/CreateTaskRequest/Parties&quot; xmlns:m11=&quot;http://capabilities.nat.bt.com/xsd/ManageEngineeringTask/2008/06/30/CCM/CreateTaskRequest/Places&quot; xmlns:m12=&quot;http://capabilities.nat.bt.com/xsd/ManageEngineeringTask/2008/06/30/CCM/CreateTaskRequest/MTOSI&quot; xmlns:m13=&quot;http://capabilities.nat.bt.com/xsd/ManageEngineeringTask/2008/06/30/CCM/CreateTaskRequest/MTOSI/Structs&quot; xmlns:m14=&quot;http://capabilities.nat.bt.com/xsd/ManageEngineeringTask/2008/06/30/CCM/CreateTaskRequest/MTOSI/Enums&quot; xmlns:m15=&quot;http://capabilities.nat.bt.com/xsd/ManageEngineeringTask/2008/06/30/CCM/CreateTaskRequest/OperationalAnalysis&quot; xmlns:m16=&quot;http://capabilities.nat.bt.com/xsd/ManageEngineeringTask/2008/06/30/CCM/CreateTaskRequest/Interaction&quot; xmlns:m17=&quot;http://capabilities.nat.bt.com/xsd/ManageEngineeringTask/2008/06/30/CCM/CreateTaskRequest/Users&quot; xmlns:m18=&quot;http://capabilities.nat.bt.com/xsd/ManageEngineeringTask/2008/06/30/CCM/CreateTaskRequest/Parties/PartyRoles/Customer&quot;&gt;
+	&lt;SOAP-ENV:Body&gt; 
+		&lt;m:createTaskRequest xmlns:m=&quot;http://capabilities.nat.bt.com/xsd/ManageEngineeringTask/2008/06/30&quot;   xsi:schemaLocation=&quot; ManageEngineeringTask.20080630.xsd&quot; &gt; 
+			&lt;m0:standardHeader&gt; 
+				&lt;m0:e2e&gt; 
+					&lt;m0:E2EDATA&gt;E2E.busTxnHdr=PCK002069&lt;/m0:E2EDATA&gt; 
+				&lt;/m0:e2e&gt; 
+				&lt;m0:serviceState&gt; 
+					&lt;m0:stateCode&gt;OK&lt;/m0:stateCode&gt; 
+				&lt;/m0:serviceState&gt; 
+				&lt;m0:serviceAddressing&gt; 
+					&lt;m0:from&gt;http://ccm.intra.bt.com/EWOCS&lt;/m0:from&gt; 
+					&lt;m0:to&gt; 
+						&lt;m0:address&gt;http://ccm.intra.bt.com/METsk&lt;/m0:address&gt; 
+					&lt;/m0:to&gt; 
+					&lt;m0:replyTo&gt; 
+						&lt;m0:address&gt;http://ccm.intra.bt.com/EWOCS&lt;/m0:address&gt; 
+						&lt;m0:contextItemList&gt; 
+							&lt;m0:contextItem contextId=&quot;http://ccm.intra.bt.com/EWOCS&quot; contextName=&quot;serviceType&quot;&gt;EWOCS&lt;/m0:contextItem&gt; 
+							&lt;m0:contextItem contextId=&quot;http://ccm.intra.bt.com/EWOCS&quot; contextName=&quot;instanceId&quot;&gt;EO&lt;/m0:contextItem&gt; 
+							&lt;m0:contextItem contextId=&quot;http://ccm.intra.bt.com/EWOCS&quot; contextName=&quot;taskIdentifier&quot;&gt;3379685&lt;/m0:contextItem&gt; 
+						&lt;/m0:contextItemList&gt; 
+					&lt;/m0:replyTo&gt; 
+					&lt;m0:messageId&gt;49211449&lt;/m0:messageId&gt; 
+					&lt;m0:serviceName&gt;http://capabilities.nat.bt.com/ManageEngineeringTask&lt;/m0:serviceName&gt; 
+					&lt;m0:action&gt;http://capabilities.intra.bt.com/ManageEngineeringTask#CreateTaskRequest&lt;/m0:action&gt; 
+				&lt;/m0:serviceAddressing&gt; 
+				&lt;m0:serviceSpecification&gt; 
+					&lt;m0:payloadFormat&gt;XML&lt;/m0:payloadFormat&gt; 
+					&lt;m0:version&gt;1.0&lt;/m0:version&gt; 
+					&lt;m0:revision&gt;0&lt;/m0:revision&gt; 
+				&lt;/m0:serviceSpecification&gt; 
+			&lt;/m0:standardHeader&gt; 
+			&lt;m:task&gt; 
+				&lt;m1:telephoneNumber&gt;3379685&lt;/m1:telephoneNumber&gt; 
+				&lt;m1:expectedFinishDateTime&gt;24/10/2019 07:00:00&lt;/m1:expectedFinishDateTime&gt; 
+				&lt;m1:secondaryCommitmentLatestFinish&gt;24/10/2019 23:59:00&lt;/m1:secondaryCommitmentLatestFinish&gt;
+				&lt;m1:responseIndicator&gt;NONE&lt;/m1:responseIndicator&gt; 
+				&lt;m1:workLocationQualifier&gt;C&lt;/m1:workLocationQualifier&gt; 
+				&lt;m1:importantClass&gt;18&lt;/m1:importantClass&gt; 
+				&lt;m1:jIN&gt; 
+					&lt;m1:name&gt;TASKIDENTIFIER&lt;/m1:name&gt; 
+					&lt;m1:value&gt;${taskId}&lt;/m1:value&gt; 
+				&lt;/m1:jIN&gt; 
+				&lt;m1:associateTask&gt; 
+					&lt;m1:name&gt;TIMESHEETREFERENCENUMBER&lt;/m1:name&gt; 
+					&lt;m1:value&gt;CJF/GRVF4Y&lt;/m1:value&gt; 
+				&lt;/m1:associateTask&gt; 
+				&lt;m1:associateTask&gt; 
+					&lt;m1:name&gt;DUMMYTASKID&lt;/m1:name&gt; 
+					&lt;m1:value&gt;${taskId}&lt;/m1:value&gt; 
+				&lt;/m1:associateTask&gt; 
+				&lt;m1:taskCategory&gt; 
+					&lt;m1:name&gt;${taskType}&lt;/m1:name&gt; 
+				&lt;/m1:taskCategory&gt; 
+				&lt;m1:problem&gt; 
+					&lt;m2:problemReportCode&gt;NDT&lt;/m2:problemReportCode&gt; 
+					&lt;m2:mainproblemLocation&gt;LN&lt;/m2:mainproblemLocation&gt; 
+					&lt;m2:problemCategory&gt; 
+						&lt;m2:productType&gt;${product}&lt;/m2:productType&gt; 
+					&lt;/m2:problemCategory&gt; 
+					&lt;m2:fault&gt; 
+						&lt;m2:dateTimeRaised&gt;25/09/2019 10:14:54&lt;/m2:dateTimeRaised&gt; 
+					&lt;/m2:fault&gt; 
+				&lt;/m1:problem&gt; 
+				&lt;m1:careLevel&gt;
+					&lt;m3:name&gt;STANDARD CARE&lt;/m3:name&gt;
+				&lt;/m1:careLevel&gt;
+				&lt;m1:taskNote&gt; 
+					&lt;m1:name&gt;HAZARD&lt;/m1:name&gt; 
+					&lt;m1:value&gt;
+						&lt;![CDATA[No Data Available Via Ewocs]]&gt;
+					&lt;/m1:value&gt; 
+				&lt;/m1:taskNote&gt; 
+				&lt;m1:taskNote&gt; 
+					&lt;m1:name&gt;WARNING&lt;/m1:name&gt; 
+					&lt;m1:value&gt;
+						&lt;![CDATA[No Data Available Via Ewocs]]&gt;
+					&lt;/m1:value&gt; 
+				&lt;/m1:taskNote&gt; 
+				&lt;m1:taskNote&gt; 
+					&lt;m1:name&gt;LINETEST&lt;/m1:name&gt; 
+					&lt;m1:value&gt;
+						&lt;![CDATA[No Data Available Via Ewocs]]&gt;
+					&lt;/m1:value&gt; 
+				&lt;/m1:taskNote&gt; 
+				&lt;m1:taskNote&gt; 
+					&lt;m1:name&gt;TECHNICAL&lt;/m1:name&gt; 
+					&lt;m1:value&gt;
+						&lt;![CDATA[There are no Technical Notes]]&gt;
+					&lt;/m1:value&gt; 
+				&lt;/m1:taskNote&gt;  
+				&lt;m1:taskNote&gt; 
+					&lt;m1:name&gt;ACCESS&lt;/m1:name&gt; 
+					&lt;m1:value&gt;
+						&lt;![CDATA[There are NO ACCESS Notes]]&gt;
+					&lt;/m1:value&gt; 
+				&lt;/m1:taskNote&gt; 
+				&lt;m1:taskNote&gt; 
+					&lt;m1:name&gt;GENERAL&lt;/m1:name&gt; 
+					&lt;m1:value&gt;
+						&lt;![CDATA[CASE NOTES 
+
+]]&gt;
+					&lt;/m1:value&gt; 
+				&lt;/m1:taskNote&gt; 
+				&lt;m1:taskNote&gt; 
+					&lt;m1:name&gt; PRIORITY&lt;/m1:name&gt; 
+					&lt;m1:value&gt;
+						&lt;![CDATA[]]&gt;
+					&lt;/m1:value&gt;
+				&lt;/m1:taskNote&gt; 
+				&lt;m1:taskNote&gt; 
+					&lt;m1:name&gt;TASK&lt;/m1:name&gt; 
+					&lt;m1:value&gt;
+						&lt;![CDATA[************** AUTO BUILT EWOCS Primary Task **************
+****** Reminder: Only Complete Fully completed tasks  ******
+Contact Name: FIRSTNAME  SURNAME
+CONTACT: 01908 6248644
+ADDRESS IS LONDON
+ORDER DESCRIPTION CORE JUNCTION FIBRE
+
+CASE TASKS
+1#NI6F#Splice Fib Sbqt Fib. Per Sbqt Fib.
+
+ClAIMED WAU&apos;s
+0#NI6F# (0:00)
+
+Remaining WAU&apos;s
+1#NI6F
+# (0:04)
+************************************************************CASE NOTES 
+]]&gt;
+					&lt;/m1:value&gt; 
+				&lt;/m1:taskNote&gt; 
+				&lt;m1:order&gt; 
+					&lt;m3:toReference&gt;IBG160DN&lt;/m3:toReference&gt; 
+					&lt;m3:orderItem&gt; 
+						&lt;m3:note&gt; 
+							&lt;m3:noteType&gt;PRODUCTDESCRIPTION&lt;/m3:noteType&gt; 
+							&lt;m3:text&gt;Splice Fib Sbqt Fib. Per Sbqt Fib.&lt;/m3:text&gt; 
+						&lt;/m3:note&gt; 
+						&lt;m3:quantity&gt; 
+							&lt;m4:units&gt;UNITS&lt;/m4:units&gt; 
+							&lt;m4:amount&gt;+1&lt;/m4:amount&gt; 
+						&lt;/m3:quantity&gt; 
+						&lt;m3:productInstance&gt; 
+							&lt;m5:productName&gt; 
+								&lt;m7:name&gt;NAMES&lt;/m7:name&gt; 
+								&lt;m7:identifier&gt; 
+									&lt;m7:name&gt;NI6F&lt;/m7:name&gt; 
+								&lt;/m7:identifier&gt; 
+							&lt;/m5:productName&gt; 
+						&lt;/m3:productInstance&gt; 
+						&lt;m3:wauProductInstance&gt;
+							&lt;m5:wauProductType&gt;
+								&lt;m5:name&gt;BTWAUProductType&lt;/m5:name&gt;
+								&lt;m5:value&gt;
+									&lt;![CDATA[P]]&gt;
+								&lt;/m5:value&gt;
+							&lt;/m5:wauProductType&gt;
+							&lt;m5:note&gt;
+								&lt;m5:noteType&gt;BTWAUProductLongDescription&lt;/m5:noteType&gt;
+								&lt;m5:text&gt;
+									&lt;![CDATA[All activities necessary to splice subsequent fibres including but not limited to: Fibre Splice;  inserting splitter or WDM; Continuity test.]]&gt;
+								&lt;/m5:text&gt;
+							&lt;/m5:note&gt;
+							&lt;m5:note&gt;
+								&lt;m5:noteType&gt;BTWAUUsage&lt;/m5:noteType&gt;
+								&lt;m5:text&gt;
+									&lt;![CDATA[Fibre Jointing/Terminating. Covers second and additional fibres in any single location.]]&gt;
+								&lt;/m5:text&gt;
+							&lt;/m5:note&gt;
+							&lt;m5:wauUnitOfIssue&gt;
+								&lt;m5:name&gt;BTUnitOfIssue&lt;/m5:name&gt;
+								&lt;m5:value&gt;
+									&lt;![CDATA[Per Subsequent Fibre]]&gt;
+								&lt;/m5:value&gt;
+							&lt;/m5:wauUnitOfIssue&gt;
+							&lt;m5:wauSingleUnitTime&gt;
+								&lt;m5:name&gt;BTSingleUnitTime&lt;/m5:name&gt;
+								&lt;m5:value&gt;.07&lt;/m5:value&gt;
+							&lt;/m5:wauSingleUnitTime&gt;
+							&lt;m5:wauEngineeringActivity&gt;
+								&lt;m5:name&gt;BTEngineeringActivity&lt;/m5:name&gt;
+								&lt;m5:value&gt;Fibre Provide&lt;/m5:value&gt;
+							&lt;/m5:wauEngineeringActivity&gt;
+						&lt;/m3:wauProductInstance&gt;
+					&lt;/m3:orderItem&gt; 
+					&lt;m3:orderIdentifier&gt;
+						&lt;m3:name&gt;ProjectId&lt;/m3:name&gt; 
+						&lt;m3:value&gt;NU7PT&lt;/m3:value&gt; 
+					&lt;/m3:orderIdentifier&gt;
+				&lt;/m1:order&gt; 
+				&lt;m1:taskRole&gt; 
+					&lt;m1:name&gt;LOB&lt;/m1:name&gt; 
+					&lt;m1:value&gt;Openreach&lt;/m1:value&gt; 
+				&lt;/m1:taskRole&gt; 
+				&lt;m1:managedElement&gt; 
+					&lt;m12:aliasNameList&gt; 
+						&lt;m13:attributeName&gt;CODE1141&lt;/m13:attributeName&gt; 
+						&lt;m13:attributeValue&gt;AA&lt;/m13:attributeValue&gt; 
+					&lt;/m12:aliasNameList&gt; 
+					&lt;m12:equipmentHolder&gt; 
+						&lt;m12:location&gt; 
+							&lt;m11:accessFor24hr&gt;true&lt;/m11:accessFor24hr&gt; 
+						&lt;/m12:location&gt; 
+					&lt;/m12:equipmentHolder&gt; 
+				&lt;/m1:managedElement&gt; 
+				&lt;m1:siteContact&gt; 
+					&lt;m18:customerSite&gt; 
+						&lt;m18:customerContact&gt; 
+							&lt;m18:contactDetails&gt; 
+								&lt;m10:person&gt; 
+									&lt;m10:personName&gt; 
+										&lt;m10:forename&gt;FIRSTNAME &lt;/m10:forename&gt; 
+										&lt;m10:surname&gt;SURNAME&lt;/m10:surname&gt; 
+									&lt;/m10:personName&gt; 
+								&lt;/m10:person&gt; 
+								&lt;m10:phoneNumber&gt; 
+									&lt;m10:phoneNumber&gt;01908 6248644&lt;/m10:phoneNumber&gt; 
+								&lt;/m10:phoneNumber&gt; 
+								&lt;m10:address&gt; 
+									&lt;m11:welshPostalAddress&gt; 
+										&lt;m11:uKPostalAddress&gt; 
+											&lt;m11:thoroughfareNumber/&gt; 
+											&lt;m11:thoroughfareName&gt;LONDON&lt;/m11:thoroughfareName&gt; 
+											&lt;m11:dependentThoroughfareName/&gt; 
+											&lt;m11:dependentLocality/&gt; 
+											&lt;m11:subPremise/&gt; 
+											&lt;m11:organization/&gt; 
+											&lt;m11:postTown/&gt; 
+											&lt;m11:buildingName/&gt; 
+											&lt;m11:county/&gt; 
+											&lt;m11:poBox/&gt; 
+											&lt;m11:postCode&gt;CF447AA&lt;/m11:postCode&gt; 
+										&lt;/m11:uKPostalAddress&gt; 
+									&lt;/m11:welshPostalAddress&gt; 
+									&lt;m11:country&gt; 
+										&lt;m11:name&gt;GB&lt;/m11:name&gt; 
+									&lt;/m11:country&gt; 
+								&lt;/m10:address&gt; 
+							&lt;/m18:contactDetails&gt; 
+						&lt;/m18:customerContact&gt; 
+					&lt;/m18:customerSite&gt; 
+				&lt;/m1:siteContact&gt; 
+				&lt;m1:productInstance&gt; 
+					&lt;m5:productSpecification&gt; 
+						&lt;m5:serviceSpecification&gt; 
+							&lt;m6:id&gt;3379685&lt;/m6:id&gt; 
+						&lt;/m5:serviceSpecification&gt; 
+					&lt;/m5:productSpecification&gt; 
+				&lt;/m1:productInstance&gt; 
+				&lt;m1:serviceInstance&gt; 
+					&lt;m6:definitelyAffectedFlag&gt;true&lt;/m6:definitelyAffectedFlag&gt; 
+				&lt;/m1:serviceInstance&gt; 
+				&lt;m1:taskCharacteristic&gt; 
+					&lt;m1:name&gt;GANGDETAILS&lt;/m1:name&gt; 
+					&lt;m1:value&gt;
+						&lt;![CDATA[000000000+000000000+0000000+true]]&gt;
+					&lt;/m1:value&gt;
+				&lt;/m1:taskCharacteristic&gt; 
+				&lt;m1:taskCharacteristic&gt; 
+					&lt;m1:name&gt;BTJOBPACKURL&lt;/m1:name&gt; 
+					&lt;m1:value&gt;
+						&lt;![CDATA[http://10.54.214.122:80/ORjobpackretrievalweb/default.aspx?id=1301414]]&gt;
+					&lt;/m1:value&gt; 
+				&lt;/m1:taskCharacteristic&gt; 
+				&lt;m1:taskCharacteristic&gt; 
+					&lt;m1:name&gt;UPSTREAMDATABANDWIDTH&lt;/m1:name&gt; 
+					&lt;m1:value/&gt; 
+				&lt;/m1:taskCharacteristic&gt; 
+				&lt;m1:taskCharacteristic&gt; 
+					&lt;m1:name&gt;DOWNSTREAMDATABANDWIDTH&lt;/m1:name&gt; 
+					&lt;m1:value/&gt; 
+				&lt;/m1:taskCharacteristic&gt; 
+				&lt;m1:taskCharacteristic&gt;
+					&lt;m1:name&gt;JOBTYPEID&lt;/m1:name&gt;
+					&lt;m1:value&gt;COMPBDUK&lt;/m1:value&gt;
+				&lt;/m1:taskCharacteristic&gt;
+				&lt;m1:taskCharacteristic&gt; 
+					&lt;m1:name&gt;PROPOSEDIND&lt;/m1:name&gt; 
+					&lt;m1:value&gt;P&lt;/m1:value&gt; 
+				&lt;/m1:taskCharacteristic&gt;  
+				&lt;m1:taskCharacteristic&gt; 
+					&lt;m1:name&gt;TECHNOLOGYTYPE&lt;/m1:name&gt; 
+					&lt;m1:value&gt;Fibre&lt;/m1:value&gt; 
+				&lt;/m1:taskCharacteristic&gt;  
+				&lt;m1:taskCharacteristic&gt;
+					&lt;m1:name&gt;Rplusidentifier&lt;/m1:name&gt;
+					&lt;m1:value&gt;N&lt;/m1:value&gt;
+				&lt;/m1:taskCharacteristic&gt;
+				&lt;m1:taskCharacteristic&gt;
+					&lt;m1:name&gt;Rplusfunction&lt;/m1:name&gt;
+					&lt;m1:value&gt;Z&lt;/m1:value&gt;
+				&lt;/m1:taskCharacteristic&gt;
+				&lt;m1:taskCharacteristic&gt;
+					&lt;m1:name&gt;VisualiserDataAvailable&lt;/m1:name&gt; 
+					&lt;m1:value&gt;N&lt;/m1:value&gt; 
+				&lt;/m1:taskCharacteristic&gt;
+				&lt;m1:taskInstallation&gt; 
+					&lt;m1:id&gt;012987-011&lt;/m1:id&gt; 
+				&lt;/m1:taskInstallation&gt; 
+				&lt;m1:taskSpecification&gt; 
+					&lt;m1:skillSpecification&gt; 
+						&lt;m8:id&gt;AJBS&lt;/m8:id&gt; 
+						&lt;m8:type&gt;PRIMARY&lt;/m8:type&gt;  
+						&lt;m8:skillDuration&gt;00004&lt;/m8:skillDuration&gt; 
+						&lt;m8:numberOfPeople&gt;1&lt;/m8:numberOfPeople&gt; 
+					&lt;/m1:skillSpecification&gt; 
+				&lt;/m1:taskSpecification&gt; 
+				&lt;m1:taskCharge&gt; 
+					&lt;m1:personInformedOnCharges&gt;N&lt;/m1:personInformedOnCharges&gt; 
+				&lt;/m1:taskCharge&gt; 
+				&lt;m1:resourceRequirements&gt;
+					&lt;m1:minResourceNumber&gt;1&lt;/m1:minResourceNumber&gt;
+					&lt;m1:maxResourceNumber&gt;2&lt;/m1:maxResourceNumber&gt;
+					&lt;m1:optimumResourceNumber&gt;2&lt;/m1:optimumResourceNumber&gt;
+					&lt;m1:resourceType&gt;ENGINEER&lt;/m1:resourceType&gt;
+				&lt;/m1:resourceRequirements&gt;
+			&lt;/m:task&gt; 
+		&lt;/m:createTaskRequest&gt; 
+	&lt;/SOAP-ENV:Body&gt; 
+&lt;/SOAP-ENV:Envelope&gt;</stringProp>
+            <stringProp name="AMQPPublisher.MessageType"></stringProp>
+            <stringProp name="AMQPPublisher.ReplyToQueue"></stringProp>
+            <stringProp name="AMQPPublisher.CorrelationId"></stringProp>
+            <stringProp name="AMQPPublisher.ContentType"></stringProp>
+            <stringProp name="AMQPPublisher.MessageId"></stringProp>
+            <elementProp name="AMQPPublisher.Headers" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+              <collectionProp name="Arguments.arguments">
+                <elementProp name="x-dead-letter-exchange" elementType="Argument">
+                  <stringProp name="Argument.name">x-dead-letter-exchange</stringProp>
+                  <stringProp name="Argument.value">SourceExchange</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+                <elementProp name="x-dead-letter-routing-key" elementType="Argument">
+                  <stringProp name="Argument.name">x-dead-letter-routing-key</stringProp>
+                  <stringProp name="Argument.value">ewocs_to_metb_inb_h_rkey</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+                <elementProp name="x-max-length" elementType="Argument">
+                  <stringProp name="Argument.name">x-max-length</stringProp>
+                  <stringProp name="Argument.value">1000000</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+              </collectionProp>
+            </elementProp>
+          </com.zeroclue.jmeter.protocol.amqp.AMQPPublisher>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE_RECEIVED_MESSAGES" enabled="true">
+            <stringProp name="TestPlan.comments">Check if entry is made in RECEIVED_MESSAGES table</stringProp>
+            <stringProp name="dataSource">METB</stringProp>
+            <stringProp name="queryType">Select Statement</stringProp>
+            <stringProp name="query">select * from RECEIVED_MESSAGES where TASK_IDENTIFIER=&apos;${taskId}&apos; AND TYPE_OF_REQUEST=&apos;CreateTaskRequest&apos;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable">received_message_create</stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as Object</stringProp>
+          </JDBCSampler>
+          <hashTree>
+            <BeanShellTimer guiclass="TestBeanGUI" testclass="BeanShellTimer" testname="BeanShell Timer" enabled="true">
+              <boolProp name="resetInterpreter">false</boolProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="script">Integer sleep = 30000;
+
+log.info( &quot;Sleep for &quot; + sleep.toString() + &quot; milli-seconds&quot; );
+return sleep;</stringProp>
+            </BeanShellTimer>
+            <hashTree/>
+            <BeanShellAssertion guiclass="BeanShellAssertionGui" testclass="BeanShellAssertion" testname="BeanShell Assertion" enabled="true">
+              <stringProp name="BeanShellAssertion.query">if(vars.getObject(&quot;received_message_create&quot;).size() != 0) {
+	log.info(&quot;TASK ID Validation Completed&quot;);
+} else {
+	FailureMessage = &quot;FAILED. CREATE Task not found in METB TaskDetails Table for Task ID: ${taskId}&quot;;
+	Failure = true;	
+	prev.setStopThread(true); 
+}</stringProp>
+              <stringProp name="BeanShellAssertion.filename"></stringProp>
+              <stringProp name="BeanShellAssertion.parameters"></stringProp>
+              <boolProp name="BeanShellAssertion.resetInterpreter">false</boolProp>
+            </BeanShellAssertion>
+            <hashTree/>
+            <ResultAction guiclass="ResultActionGui" testclass="ResultAction" testname="Result Status Action Handler" enabled="true">
+              <intProp name="OnError.action">2</intProp>
+            </ResultAction>
+            <hashTree/>
+          </hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="EWOCS_CREATE_TASKSTATUS_Check" enabled="true">
+            <stringProp name="TestPlan.comments">Check if entry is made in TASKSTATUS table</stringProp>
+            <stringProp name="dataSource">METB</stringProp>
+            <stringProp name="queryType">Select Statement</stringProp>
+            <stringProp name="query">SELECT * FROM TASKDETAILS WHERE TASK_REF_NUMBER=&apos;${taskId}&apos;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable">taskdetails</stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as Object</stringProp>
+          </JDBCSampler>
+          <hashTree>
+            <BeanShellAssertion guiclass="BeanShellAssertionGui" testclass="BeanShellAssertion" testname="BeanShell Assertion" enabled="true">
+              <stringProp name="BeanShellAssertion.query">if(vars.getObject(&quot;taskdetails&quot;).size() != 0) {
+	String met_ref_number = vars.getObject(&quot;taskdetails&quot;).get(0).get(&quot;MET_REF_NUMBER&quot;);
+	vars.put(&quot;met_ref_number&quot;,met_ref_number);
+	log.info(&quot;MET_REF_NUMBER Value &gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; &quot; + met_ref_number);
+} else {
+	FailureMessage = &quot;FAILED. CREATE Task not found in METB TaskDetails Table for Task ID: ${taskId}&quot;;
+	Failure = true;	
+	prev.setStopThread(true); 
+}</stringProp>
+              <stringProp name="BeanShellAssertion.filename"></stringProp>
+              <stringProp name="BeanShellAssertion.parameters"></stringProp>
+              <boolProp name="BeanShellAssertion.resetInterpreter">false</boolProp>
+            </BeanShellAssertion>
+            <hashTree/>
+            <ResultAction guiclass="ResultActionGui" testclass="ResultAction" testname="Result Status Action Handler" enabled="true">
+              <intProp name="OnError.action">2</intProp>
+            </ResultAction>
+            <hashTree/>
+          </hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE_AGGREGATION_REQUEST_EMPPAL_Check" enabled="true">
+            <stringProp name="TestPlan.comments">Check if entry is made in taskdetails_agg_message table for EMPPAL</stringProp>
+            <stringProp name="dataSource">METB</stringProp>
+            <stringProp name="queryType">Select Statement</stringProp>
+            <stringProp name="query">select * from taskdetails_agg_message WHERE MET_REF_NUMBER=&apos;${met_ref_number}&apos; AND MESSAGE_TYPE=&apos;AGG_REQ&apos; and TYPE_OF_AGGREGATION=&apos;EMPPAL&apos;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable">taskdetails_agg</stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as Object</stringProp>
+          </JDBCSampler>
+          <hashTree>
+            <BeanShellAssertion guiclass="BeanShellAssertionGui" testclass="BeanShellAssertion" testname="BeanShell Assertion" enabled="true">
+              <stringProp name="BeanShellAssertion.query">if(vars.getObject(&quot;taskdetails_agg&quot;).size() != 0) {
+	log.info(&quot;EMPPAL REQUEST SENT &gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; &quot;);
+} else {
+	FailureMessage = &quot;FAILED. EMPPAL Request not sent for MET_REF_NUMBER: ${met_ref_number}&quot;;
+	Failure = true;	
+	prev.setStopThread(true); 
+}</stringProp>
+              <stringProp name="BeanShellAssertion.filename"></stringProp>
+              <stringProp name="BeanShellAssertion.parameters"></stringProp>
+              <boolProp name="BeanShellAssertion.resetInterpreter">false</boolProp>
+            </BeanShellAssertion>
+            <hashTree/>
+            <ResultAction guiclass="ResultActionGui" testclass="ResultAction" testname="Result Status Action Handler" enabled="true">
+              <intProp name="OnError.action">2</intProp>
+            </ResultAction>
+            <hashTree/>
+          </hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE_AGGREGATION_RESPONSE_EMPPAL_Check" enabled="true">
+            <stringProp name="TestPlan.comments">Check if entry is made in taskdetails table for EMPPAL Response</stringProp>
+            <stringProp name="dataSource">METB</stringProp>
+            <stringProp name="queryType">Select Statement</stringProp>
+            <stringProp name="query">SELECT * FROM AGGREGATION_DATA WHERE AGGREGATION=&apos;EMPPAL&apos; AND KEY=&apos;emppalResponse&apos; and MET_REF_NUMBER=&apos;${met_ref_number}&apos;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable">taskdetails_res</stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as Object</stringProp>
+          </JDBCSampler>
+          <hashTree>
+            <BeanShellAssertion guiclass="BeanShellAssertionGui" testclass="BeanShellAssertion" testname="BeanShell Assertion" enabled="true">
+              <stringProp name="BeanShellAssertion.query">if(vars.getObject(&quot;taskdetails_res&quot;).size() != 0) {
+	log.info(&quot;EMPPAL REQUEST RECEIVED &gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; &quot;);
+} else {
+	FailureMessage = &quot;FAILED. RESPONSE not received from EMPPAL for MET_REF_NUMBER: ${met_ref_number}&quot;;
+	Failure = true;	
+	prev.setStopThread(true); 
+}</stringProp>
+              <stringProp name="BeanShellAssertion.filename"></stringProp>
+              <stringProp name="BeanShellAssertion.parameters"></stringProp>
+              <boolProp name="BeanShellAssertion.resetInterpreter">false</boolProp>
+            </BeanShellAssertion>
+            <hashTree/>
+            <ResultAction guiclass="ResultActionGui" testclass="ResultAction" testname="Result Status Action Handler" enabled="true">
+              <intProp name="OnError.action">2</intProp>
+            </ResultAction>
+            <hashTree/>
+          </hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE_WM_REQUEST_Check" enabled="true">
+            <stringProp name="TestPlan.comments">Check if entry is made in taskdetails table for WM Request</stringProp>
+            <stringProp name="dataSource">METB</stringProp>
+            <stringProp name="queryType">Select Statement</stringProp>
+            <stringProp name="query">SELECT * FROM WM_MESSAGES WHERE task_identifier=&apos;${met_ref_number}&apos; AND SOURCE_SYSTEM=&apos;EWOEO&apos; AND TYPE_OF_REQUEST=&apos;taskInitiate&apos;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable">wm_req</stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as Object</stringProp>
+          </JDBCSampler>
+          <hashTree>
+            <BeanShellAssertion guiclass="BeanShellAssertionGui" testclass="BeanShellAssertion" testname="BeanShell Assertion" enabled="true">
+              <stringProp name="BeanShellAssertion.query">if(vars.getObject(&quot;wm_req&quot;).size() != 0) {
+	log.info(&quot;WM REQUEST SENT &gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; &quot;);
+} else {
+	FailureMessage = &quot;FAILED. Request not sent to WM for MET_REF_NUMBER: ${met_ref_number}&quot;;
+	Failure = true;	
+	prev.setStopThread(true); 
+}</stringProp>
+              <stringProp name="BeanShellAssertion.filename"></stringProp>
+              <stringProp name="BeanShellAssertion.parameters"></stringProp>
+              <boolProp name="BeanShellAssertion.resetInterpreter">false</boolProp>
+            </BeanShellAssertion>
+            <hashTree/>
+            <ResultAction guiclass="ResultActionGui" testclass="ResultAction" testname="Result Status Action Handler" enabled="true">
+              <intProp name="OnError.action">2</intProp>
+            </ResultAction>
+            <hashTree/>
+          </hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE_WM_RESPONSE_Check" enabled="true">
+            <stringProp name="TestPlan.comments">Check if entry is made in taskdetails table for WM RESPONSE</stringProp>
+            <stringProp name="dataSource">METB</stringProp>
+            <stringProp name="queryType">Select Statement</stringProp>
+            <stringProp name="query">SELECT * FROM RESPONSE_RECEIVED WHERE MET_REF_NUMBER=&apos;${met_ref_number}&apos; AND SOURCE_SYSTEM=&apos;EWOEO&apos; AND TYPE_OF_RESPONSE=&apos;taskInitiate&apos;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable">wm_res</stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as Object</stringProp>
+          </JDBCSampler>
+          <hashTree>
+            <BeanShellAssertion guiclass="BeanShellAssertionGui" testclass="BeanShellAssertion" testname="BeanShell Assertion" enabled="true">
+              <stringProp name="BeanShellAssertion.query">if(vars.getObject(&quot;wm_res&quot;).size() != 0) {
+	log.info(&quot;WM RESPONSE RECEIVED &gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; &quot;);
+} else {
+	FailureMessage = &quot;FAILED. Response not received from WM for MET_REF_NUMBER: ${met_ref_number}&quot;;
+	Failure = true;	
+	prev.setStopThread(true); 
+}</stringProp>
+              <stringProp name="BeanShellAssertion.filename"></stringProp>
+              <stringProp name="BeanShellAssertion.parameters"></stringProp>
+              <boolProp name="BeanShellAssertion.resetInterpreter">false</boolProp>
+            </BeanShellAssertion>
+            <hashTree/>
+            <ResultAction guiclass="ResultActionGui" testclass="ResultAction" testname="Result Status Action Handler" enabled="true">
+              <intProp name="OnError.action">2</intProp>
+            </ResultAction>
+            <hashTree/>
+          </hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CREATE_METB_RESPONSE_Check" enabled="true">
+            <stringProp name="TestPlan.comments">Check if entry is made in taskdetails table for WM RESPONSE</stringProp>
+            <stringProp name="dataSource">METB</stringProp>
+            <stringProp name="queryType">Select Statement</stringProp>
+            <stringProp name="query">	SELECT SENT_MESSAGE FROM RESPONSE_SENT WHERE MET_REF_NUMBER=&apos;${met_ref_number}&apos; AND SOURCE_SYSTEM=&apos;EWOEO&apos; AND TYPE_OF_RESPONSE=&apos;taskInitiateResponse&apos;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable">metb_res</stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as Object</stringProp>
+          </JDBCSampler>
+          <hashTree>
+            <BeanShellAssertion guiclass="BeanShellAssertionGui" testclass="BeanShellAssertion" testname="BeanShell Assertion for WM_Response" enabled="true">
+              <stringProp name="BeanShellAssertion.query">if(vars.getObject(&quot;metb_res&quot;).size() != 0) {
+	log.info(&quot;WM RESPONSE RECEIVED &gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; &quot;);
+} else {
+	FailureMessage = &quot;FAILED. Response not SENT to EWOCS for MET_REF_NUMBER: ${met_ref_number}&quot;;
+	Failure = true;	
+	prev.setStopThread(true); 
+}</stringProp>
+              <stringProp name="BeanShellAssertion.filename"></stringProp>
+              <stringProp name="BeanShellAssertion.parameters"></stringProp>
+              <boolProp name="BeanShellAssertion.resetInterpreter">false</boolProp>
+            </BeanShellAssertion>
+            <hashTree/>
+            <BeanShellAssertion guiclass="BeanShellAssertionGui" testclass="BeanShellAssertion" testname="BeanShell Assertion_Set_Success_Create" enabled="true">
+              <stringProp name="BeanShellAssertion.query">	String createSuccess = &quot;YES&quot;;
+	vars.put(&quot;created_create&quot;,createSuccess);
+	log.info(&quot;Create Success &gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; &quot;);</stringProp>
+              <stringProp name="BeanShellAssertion.filename"></stringProp>
+              <stringProp name="BeanShellAssertion.parameters"></stringProp>
+              <boolProp name="BeanShellAssertion.resetInterpreter">false</boolProp>
+            </BeanShellAssertion>
+            <hashTree/>
+            <ResultAction guiclass="ResultActionGui" testclass="ResultAction" testname="Result Status Action Handler" enabled="true">
+              <intProp name="OnError.action">2</intProp>
+            </ResultAction>
+            <hashTree/>
+          </hashTree>
+        </hashTree>
+        <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="${request_Type} AMEND TC" enabled="true">
+          <boolProp name="TransactionController.includeTimers">false</boolProp>
+          <boolProp name="TransactionController.parent">true</boolProp>
+        </TransactionController>
+        <hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="EWOCS_GET_AMEND_CONFIG" enabled="true">
+            <stringProp name="TestPlan.comments">Fetch METB Configuration</stringProp>
+            <stringProp name="dataSource">METB</stringProp>
+            <stringProp name="query">SELECT * FROM METB_ART_CONFIG WHERE testid=&apos;EWOTC01&apos;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="queryType">Select Statement</stringProp>
+            <stringProp name="resultSetHandler">Store as Object</stringProp>
+            <stringProp name="resultVariable">sanityCheckConfig</stringProp>
+            <stringProp name="variableNames"></stringProp>
+          </JDBCSampler>
+          <hashTree>
+            <BeanShellAssertion guiclass="BeanShellAssertionGui" testclass="BeanShellAssertion" testname="BeanShell Assertion" enabled="true">
+              <stringProp name="BeanShellAssertion.query">try {
+	if(vars.getObject(&quot;sanityCheckConfig&quot;).size() != 0) {
+	String taskId = vars.getObject(&quot;sanityCheckConfig&quot;).get(0).get(&quot;TASK_ID&quot;);
+	String taskType = vars.getObject(&quot;sanityCheckConfig&quot;).get(0).get(&quot;TASK_TYPE&quot;);
+	String product = vars.getObject(&quot;sanityCheckConfig&quot;).get(0).get(&quot;PRODUCT&quot;);
+	vars.put(&quot;taskId&quot;,taskId);
+	vars.put(&quot;taskType&quot;,taskType);
+	vars.put(&quot;product&quot;,product);
+	${__setProperty(globalTaskId, taskId)};
+	${__setProperty(globalTaskType, taskType)};
+	${__setProperty(globalProduct, product)};
+	log.info(&quot;TaskId Value &gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; &quot; + taskId);
+	log.info(&quot;Task Type Value &gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; &quot; + taskType);
+	log.info(&quot;Product Value &gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; &quot; + product);
+	String overAllDelay = vars.getObject(&quot;sanityCheckConfig&quot;).get(0).get(&quot;OVERALL_DELAY&quot;);
+	vars.put(&quot;overAllDelay&quot;,overAllDelay);
+	log.info(&quot;overAllDelay Value &gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; &quot; + overAllDelay);	
+} else {
+	FailureMessage = &quot;FAILED. Please configure TEST CONFIGURATIONS for EWOCS in METB_ART_CONFIG&quot;;
+	Failure = true;	
+	prev.setStopThread(true); 
+}
+}
+catch (Throwable ex) {
+    log.error(&quot;Error in Beanshell&quot;, ex);
+    throw ex;
+}</stringProp>
+              <stringProp name="BeanShellAssertion.filename"></stringProp>
+              <stringProp name="BeanShellAssertion.parameters"></stringProp>
+              <boolProp name="BeanShellAssertion.resetInterpreter">true</boolProp>
+            </BeanShellAssertion>
+            <hashTree/>
+            <ResultAction guiclass="ResultActionGui" testclass="ResultAction" testname="Result Status Action Handler" enabled="true">
+              <intProp name="OnError.action">2</intProp>
+            </ResultAction>
+            <hashTree/>
+          </hashTree>
+          <com.zeroclue.jmeter.protocol.amqp.AMQPPublisher guiclass="com.zeroclue.jmeter.protocol.amqp.gui.AMQPPublisherGui" testclass="com.zeroclue.jmeter.protocol.amqp.AMQPPublisher" testname="Post_Amend_Task_Request" enabled="true">
+            <stringProp name="AMQPSampler.Exchange">SourceExchange</stringProp>
+            <boolProp name="AMQPSampler.ExchangeDurable">true</boolProp>
+            <boolProp name="AMQPSampler.ExchangeAutoDelete">false</boolProp>
+            <boolProp name="AMQPSampler.ExchangeRedeclare">false</boolProp>
+            <stringProp name="AMQPSampler.Queue"></stringProp>
+            <stringProp name="AMQPSampler.RoutingKey"></stringProp>
+            <stringProp name="AMQPSampler.VirtualHost">METBVHOST</stringProp>
+            <stringProp name="AMQPSampler.MessageTTL">604800000</stringProp>
+            <stringProp name="AMQPSampler.MessageExpires"></stringProp>
+            <stringProp name="AMQPSampler.ExchangeType">direct</stringProp>
+            <stringProp name="AMQPSampler.QueueDurable">true</stringProp>
+            <stringProp name="AMQPSampler.QueueExclusive">false</stringProp>
+            <stringProp name="AMQPSampler.QueueAutoDelete">false</stringProp>
+            <boolProp name="AMQPSampler.Redeclare">false</boolProp>
+            <stringProp name="AMQPSampler.Timeout">1000</stringProp>
+            <stringProp name="AMQPSampler.Iterations">1</stringProp>
+            <stringProp name="AMQPSampler.Host">10.54.210.59</stringProp>
+            <stringProp name="AMQPSampler.Port">5672</stringProp>
+            <stringProp name="AMQPSampler.Username">admin</stringProp>
+            <stringProp name="AMQPSampler.Password">password</stringProp>
+            <stringProp name="AMQPSampler.SSL">false</stringProp>
+            <boolProp name="AMQPPublisher.Persistent">false</boolProp>
+            <boolProp name="AMQPPublisher.UseTx">false</boolProp>
+            <stringProp name="AMQPPublisher.MessageRoutingKey">ewocs_to_metb_inb_rkey</stringProp>
+            <stringProp name="AMQPPublisher.Message"> &lt;SOAP-ENV:Envelope xmlns:SOAP-ENV=&quot;http://schemas.xmlsoap.org/soap/envelope/&quot; xmlns:SOAP-ENC=&quot;http://schemas.xmlsoap.org/soap/encoding/&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:xsd=&quot;http://www.w3.org/2001/XMLSchema&quot; xmlns:m0=&quot;http://wsi.nat.bt.com/2005/06/StandardHeader/&quot; xmlns:m1=&quot;http://capabilities.nat.bt.com/xsd/ManageEngineeringTask/2008/06/30/CCM/AmendTaskRequest/Activities&quot; xmlns:m2=&quot;http://capabilities.nat.bt.com/xsd/ManageEngineeringTask/2008/06/30/CCM/AmendTaskRequest/Incidents&quot; xmlns:m3=&quot;http://capabilities.nat.bt.com/xsd/ManageEngineeringTask/2008/06/30/CCM/AmendTaskRequest/Agreements&quot; xmlns:m4=&quot;http://capabilities.nat.bt.com/xsd/ManageEngineeringTask/2008/06/30/CCM/AmendTaskRequest/Portfolio&quot; xmlns:m5=&quot;http://capabilities.nat.bt.com/xsd/ManageEngineeringTask/2008/06/30/CCM/AmendTaskRequest/Services&quot; xmlns:m6=&quot;http://capabilities.nat.bt.com/xsd/ManageEngineeringTask/2008/06/30/CCM/AmendTaskRequest/CoreClasses/Specifications&quot; xmlns:m7=&quot;http://capabilities.nat.bt.com/xsd/ManageEngineeringTask/2008/06/30/CCM/AmendTaskRequest/BaseTypes&quot; xmlns:m8=&quot;http://capabilities.nat.bt.com/xsd/ManageEngineeringTask/2008/06/30/CCM/AmendTaskRequest/HR&quot; xmlns:m9=&quot;http://capabilities.nat.bt.com/xsd/ManageEngineeringTask/2008/06/30/CCM/AmendTaskRequest/Scheduling&quot; xmlns:m10=&quot;http://capabilities.nat.bt.com/xsd/ManageEngineeringTask/2008/06/30/CCM/AmendTaskRequest/Parties&quot; xmlns:m11=&quot;http://capabilities.nat.bt.com/xsd/ManageEngineeringTask/2008/06/30/CCM/AmendTaskRequest/Places&quot; xmlns:m12=&quot;http://capabilities.nat.bt.com/xsd/ManageEngineeringTask/2008/06/30/CCM/AmendTaskRequest/MTOSI&quot; xmlns:m13=&quot;http://capabilities.nat.bt.com/xsd/ManageEngineeringTask/2008/06/30/CCM/AmendTaskRequest/MTOSI/Structs&quot; xmlns:m14=&quot;http://capabilities.nat.bt.com/xsd/ManageEngineeringTask/2008/06/30/CCM/AmendTaskRequest/MTOSI/Enums&quot; xmlns:m15=&quot;http://capabilities.nat.bt.com/xsd/ManageEngineeringTask/2008/06/30/CCM/AmendTaskRequest/OperationalAnalysis&quot; xmlns:m16=&quot;http://capabilities.nat.bt.com/xsd/ManageEngineeringTask/2008/06/30/CCM/AmendTaskRequest/Interaction&quot; xmlns:m17=&quot;http://capabilities.nat.bt.com/xsd/ManageEngineeringTask/2008/06/30/CCM/AmendTaskRequest/Users&quot; xmlns:m18=&quot;http://capabilities.nat.bt.com/xsd/ManageEngineeringTask/2008/06/30/CCM/AmendTaskRequest/Parties/PartyRoles/Customer&quot;&gt;
+	&lt;SOAP-ENV:Body&gt;
+		&lt;m:amendTaskRequest xmlns:m=&quot;http://capabilities.nat.bt.com/xsd/ManageEngineeringTask/2008/06/30&quot;   xsi:schemaLocation=&quot;http://capabilities.nat.bt.com/xsd/ManageEngineeringTask/2008/06/30 ManageEngineeringTask.20080630.xsd&quot; &gt;
+			&lt;m0:standardHeader&gt;
+				&lt;m0:e2e&gt;
+					&lt;m0:E2EDATA&gt;E2E.busTxnHdr=PCK0020691&lt;/m0:E2EDATA&gt;
+				&lt;/m0:e2e&gt;
+				&lt;m0:serviceState&gt;
+					&lt;m0:stateCode&gt;OK&lt;/m0:stateCode&gt;
+				&lt;/m0:serviceState&gt;
+				&lt;m0:serviceAddressing&gt;
+					&lt;m0:from&gt;http://ccm.intra.bt.com/EWOCS&lt;/m0:from&gt;
+					&lt;m0:to&gt;
+						&lt;m0:address&gt;http://ccm.intra.bt.com/METsk&lt;/m0:address&gt;
+					&lt;/m0:to&gt;
+					&lt;m0:replyTo&gt;
+						&lt;m0:address&gt;http://ccm.intra.bt.com/EWOCS&lt;/m0:address&gt;
+						&lt;m0:contextItemList&gt;
+							&lt;m0:contextItem contextId=&quot;http://ccm.intra.bt.com/EWOCS&quot; contextName=&quot;serviceType&quot;&gt;EWOCS&lt;/m0:contextItem&gt;
+							&lt;m0:contextItem contextId=&quot;http://ccm.intra.bt.com/EWOCS&quot; contextName=&quot;instanceId&quot;&gt;EO&lt;/m0:contextItem&gt;
+							&lt;m0:contextItem contextId=&quot;http://ccm.intra.bt.com/EWOCS&quot; contextName=&quot;taskIdentifier&quot;&gt;306412&lt;/m0:contextItem&gt;
+						&lt;/m0:contextItemList&gt;
+					&lt;/m0:replyTo&gt;
+					&lt;m0:messageId&gt;43245298&lt;/m0:messageId&gt;
+					&lt;m0:serviceName&gt;http://capabilities.nat.bt.com/ManageEngineeringTask&lt;/m0:serviceName&gt;
+					&lt;m0:action&gt;http://capabilities.intra.bt.com/ManageEngineeringTask#AmendTaskRequest&lt;/m0:action&gt;
+				&lt;/m0:serviceAddressing&gt;
+				&lt;m0:serviceSpecification&gt;
+					&lt;m0:payloadFormat&gt;XML&lt;/m0:payloadFormat&gt;
+					&lt;m0:version&gt;1.0&lt;/m0:version&gt;
+					&lt;m0:revision&gt;0&lt;/m0:revision&gt;
+				&lt;/m0:serviceSpecification&gt;
+			&lt;/m0:standardHeader&gt;
+			&lt;m:task&gt;
+				&lt;m1:amendmentReason&gt;Field Notes update&lt;/m1:amendmentReason&gt;
+				&lt;m1:telephoneNumber&gt;306494&lt;/m1:telephoneNumber&gt;
+				&lt;m1:expectedFinishDateTime&gt;22/07/2019 15:30:00&lt;/m1:expectedFinishDateTime&gt;
+				&lt;m1:secondaryCommitmentLatestFinish&gt;22/07/2019 23:59:00&lt;/m1:secondaryCommitmentLatestFinish&gt;
+				&lt;m1:responseIndicator&gt;NONE&lt;/m1:responseIndicator&gt;
+				&lt;m1:workLocationQualifier&gt;C&lt;/m1:workLocationQualifier&gt; 
+				&lt;m1:importantClass&gt;18&lt;/m1:importantClass&gt; 
+				&lt;m1:jIN&gt;
+					&lt;m1:name&gt;TASKIDENTIFIER&lt;/m1:name&gt;
+					&lt;m1:value&gt;${taskId}&lt;/m1:value&gt;
+				&lt;/m1:jIN&gt;
+				&lt;m1:associateTask&gt;
+					&lt;m1:name&gt;TIMESHEETREFERENCENUMBER&lt;/m1:name&gt;
+					&lt;m1:value&gt;CJF/GRFF8A&lt;/m1:value&gt;
+				&lt;/m1:associateTask&gt;
+				&lt;m1:associateTask&gt;
+					&lt;m1:name&gt;DUMMYTASKID&lt;/m1:name&gt;
+					&lt;m1:value&gt;${taskId}&lt;/m1:value&gt;
+				&lt;/m1:associateTask&gt;
+				&lt;m1:taskCategory&gt;
+					&lt;m1:name&gt;${taskType}&lt;/m1:name&gt;
+				&lt;/m1:taskCategory&gt;
+				&lt;m1:problem&gt;
+					&lt;m2:problemReportCode&gt;NDT&lt;/m2:problemReportCode&gt;
+					&lt;m2:mainproblemLocation&gt;LN&lt;/m2:mainproblemLocation&gt;
+					&lt;m2:problemCategory&gt;
+						&lt;m2:productType&gt;${product}&lt;/m2:productType&gt;
+					&lt;/m2:problemCategory&gt;
+					&lt;m2:fault&gt;
+						&lt;m2:dateTimeRaised&gt;12/06/2019 10:59:22&lt;/m2:dateTimeRaised&gt;
+					&lt;/m2:fault&gt;
+				&lt;/m1:problem&gt;
+				&lt;m1:careLevel&gt;
+					&lt;m3:name&gt;STANDARD CARE&lt;/m3:name&gt;
+				&lt;/m1:careLevel&gt;
+				&lt;m1:taskNote&gt;
+					&lt;m1:name&gt;HAZARD&lt;/m1:name&gt;
+					&lt;m1:value&gt;
+						&lt;![CDATA[No Data Available Via Ewocs]]&gt;
+					&lt;/m1:value&gt;
+				&lt;/m1:taskNote&gt;
+				&lt;m1:taskNote&gt;
+					&lt;m1:name&gt;WARNING&lt;/m1:name&gt;
+					&lt;m1:value&gt;
+						&lt;![CDATA[No Data Available Via Ewocs]]&gt;
+					&lt;/m1:value&gt;
+				&lt;/m1:taskNote&gt;
+				&lt;m1:taskNote&gt;
+					&lt;m1:name&gt;LINETEST&lt;/m1:name&gt;
+					&lt;m1:value&gt;
+						&lt;![CDATA[No Data Available Via Ewocs]]&gt;
+					&lt;/m1:value&gt; 
+				&lt;/m1:taskNote&gt;
+				&lt;m1:taskNote&gt;
+					&lt;m1:name&gt;TECHNICAL&lt;/m1:name&gt;
+					&lt;m1:value&gt;
+						&lt;![CDATA[There are no Technical Notes]]&gt;
+					&lt;/m1:value&gt; 
+				&lt;/m1:taskNote&gt;  
+				&lt;m1:taskNote&gt;
+					&lt;m1:name&gt;ACCESS&lt;/m1:name&gt;
+					&lt;m1:value&gt;
+						&lt;![CDATA[No Access Notes Available]]&gt;
+					&lt;/m1:value&gt;
+				&lt;/m1:taskNote&gt;
+				&lt;m1:taskNote&gt;
+					&lt;m1:name&gt;GENERAL&lt;/m1:name&gt;
+					&lt;m1:value&gt;
+						&lt;![CDATA[CASE NOTES 
+
+
+]]&gt;
+					&lt;/m1:value&gt; 
+				&lt;/m1:taskNote&gt;
+				&lt;m1:taskNote&gt;
+					&lt;m1:name&gt; PRIORITY&lt;/m1:name&gt;
+					&lt;m1:value&gt;
+						&lt;![CDATA[]]&gt;
+					&lt;/m1:value&gt;
+				&lt;/m1:taskNote&gt;
+				&lt;m1:taskNote&gt;
+					&lt;m1:name&gt;TASK&lt;/m1:name&gt;
+					&lt;m1:value&gt;
+						&lt;![CDATA[************** AUTO BUILT EWOCS Primary Task **************
+****** Reminder: Only Complete Fully completed tasks  ******
+Contact Name: FIRSTNAME  SURNAME
+CONTACT: 01908 6248644
+ADDRESS IS 
+ORDER DESCRIPTION CORE JUNCTION FIBRE
+
+CASE TASKS
+1#NI6F#Splice Fib Sbqt Fib. Per Sbqt Fib.
+
+ClAIMED TASKS
+0#NI6F# (0:00)
+
+Remaining WAU&apos;s
+1#NI6F
+# (0:04)
+************************************************************CASE NOTES 
+]]&gt;
+					&lt;/m1:value&gt; 
+				&lt;/m1:taskNote&gt;
+				&lt;m1:order&gt;
+					&lt;m3:toReference&gt;WAGRFF8A&lt;/m3:toReference&gt;
+					&lt;m3:orderItem&gt; 
+						&lt;m3:note&gt; 
+							&lt;m3:noteType&gt;PRODUCTDESCRIPTION&lt;/m3:noteType&gt; 
+							&lt;m3:text&gt;Splice Fib Sbqt Fib. Per Sbqt Fib.&lt;/m3:text&gt; 
+						&lt;/m3:note&gt; 
+						&lt;m3:productInstance&gt; 
+							&lt;m4:productName&gt; 
+								&lt;m6:name&gt;NAMES&lt;/m6:name&gt; 
+								&lt;m6:identifier&gt; 
+									&lt;m6:name&gt;NI6F&lt;/m6:name&gt; 
+								&lt;/m6:identifier&gt; 
+							&lt;/m4:productName&gt; 
+						&lt;/m3:productInstance&gt; 
+						&lt;m3:quantity&gt; 
+							&lt;m7:units&gt;UNITS&lt;/m7:units&gt; 
+							&lt;m7:amount&gt;+1&lt;/m7:amount&gt; 
+						&lt;/m3:quantity&gt; 
+						&lt;m3:wauProductInstance&gt;
+							&lt;m4:wauProductType&gt;
+								&lt;m4:name&gt;BTWAUProductType&lt;/m4:name&gt;
+								&lt;m4:value&gt;
+									&lt;![CDATA[P]]&gt;
+								&lt;/m4:value&gt;
+							&lt;/m4:wauProductType&gt;
+							&lt;m4:note&gt;
+								&lt;m4:noteType&gt;BTWAUProductLongDescription&lt;/m4:noteType&gt;
+								&lt;m4:text&gt;
+									&lt;![CDATA[All activities necessary to splice subsequent fibres including but not limited to: Fibre Splice;  inserting splitter or WDM; Continuity test.]]&gt;
+								&lt;/m4:text&gt;
+							&lt;/m4:note&gt;
+							&lt;m4:note&gt;
+								&lt;m4:noteType&gt;BTWAUUsage&lt;/m4:noteType&gt;
+								&lt;m4:text&gt;
+									&lt;![CDATA[Fibre Jointing/Terminating. Covers second and additional fibres in any single location.]]&gt;
+								&lt;/m4:text&gt;
+							&lt;/m4:note&gt;
+							&lt;m4:wauUnitOfIssue&gt;
+								&lt;m4:name&gt;BTUnitOfIssue&lt;/m4:name&gt;
+								&lt;m4:value&gt;
+									&lt;![CDATA[Per Subsequent Fibre]]&gt;
+								&lt;/m4:value&gt;
+							&lt;/m4:wauUnitOfIssue&gt;
+							&lt;m4:wauSingleUnitTime&gt;
+								&lt;m4:name&gt;BTSingleUnitTime&lt;/m4:name&gt;
+								&lt;m4:value&gt;.07&lt;/m4:value&gt;
+							&lt;/m4:wauSingleUnitTime&gt;
+							&lt;m4:wauEngineeringActivity&gt;
+								&lt;m4:name&gt;BTEngineeringActivity&lt;/m4:name&gt;
+								&lt;m4:value&gt;Fibre Provide&lt;/m4:value&gt;
+							&lt;/m4:wauEngineeringActivity&gt;
+						&lt;/m3:wauProductInstance&gt;
+					&lt;/m3:orderItem&gt; 
+					&lt;m3:orderIdentifier&gt;
+						&lt;m3:name&gt;ProjectId&lt;/m3:name&gt; 
+						&lt;m3:value&gt;NU7PT&lt;/m3:value&gt; 
+					&lt;/m3:orderIdentifier&gt;
+				&lt;/m1:order&gt;
+				&lt;m1:taskRole&gt;
+					&lt;m1:name&gt;LOB&lt;/m1:name&gt;
+					&lt;m1:value&gt;Openreach&lt;/m1:value&gt;
+				&lt;/m1:taskRole&gt;
+				&lt;m1:managedElement&gt;
+					&lt;m12:aliasNameList&gt;
+						&lt;m13:attributeName&gt;CODE1141&lt;/m13:attributeName&gt;
+						&lt;m13:attributeValue&gt;AA&lt;/m13:attributeValue&gt; 
+					&lt;/m12:aliasNameList&gt;
+					&lt;m12:equipmentHolder&gt;
+						&lt;m12:location&gt;
+							&lt;m11:accessFor24hr&gt;true&lt;/m11:accessFor24hr&gt;
+						&lt;/m12:location&gt;
+					&lt;/m12:equipmentHolder&gt;
+				&lt;/m1:managedElement&gt;
+				&lt;m1:siteContact&gt;
+					&lt;m18:customerSite&gt;
+						&lt;m18:customerContact&gt;
+							&lt;m18:contactDetails&gt;
+								&lt;m10:person&gt;
+									&lt;m10:personName&gt;
+										&lt;m10:forename&gt;Claire&lt;/m10:forename&gt;
+										&lt;m10:surname&gt;Bennet&lt;/m10:surname&gt;
+									&lt;/m10:personName&gt;
+								&lt;/m10:person&gt;
+								&lt;m10:phoneNumber&gt;
+									&lt;m10:phoneNumber&gt;+919881744526&lt;/m10:phoneNumber&gt;
+								&lt;/m10:phoneNumber&gt;
+								&lt;m10:address&gt;
+									&lt;m11:welshPostalAddress&gt;
+										&lt;m11:uKPostalAddress&gt;
+											&lt;m11:thoroughfareNumber/&gt;
+											&lt;m11:thoroughfareName/&gt;
+											&lt;m11:dependentThoroughfareName/&gt;
+											&lt;m11:dependentLocality/&gt;
+											&lt;m11:subPremise/&gt;
+											&lt;m11:organization/&gt;
+											&lt;m11:postTown/&gt;
+											&lt;m11:buildingName/&gt;
+											&lt;m11:county/&gt;
+											&lt;m11:poBox/&gt;
+											&lt;m11:postCode&gt;EN9 2LP&lt;/m11:postCode&gt;
+										&lt;/m11:uKPostalAddress&gt;
+									&lt;/m11:welshPostalAddress&gt;
+									&lt;m11:country&gt;
+										&lt;m11:name&gt;String&lt;/m11:name&gt;
+									&lt;/m11:country&gt;
+								&lt;/m10:address&gt;
+							&lt;/m18:contactDetails&gt;
+						&lt;/m18:customerContact&gt;
+					&lt;/m18:customerSite&gt;
+				&lt;/m1:siteContact&gt;
+				&lt;m1:productInstance&gt;
+					&lt;m4:productSpecification&gt;
+						&lt;m4:serviceSpecification&gt;
+							&lt;m5:id&gt;306494&lt;/m5:id&gt; 
+						&lt;/m4:serviceSpecification&gt;
+					&lt;/m4:productSpecification&gt;
+				&lt;/m1:productInstance&gt;
+				&lt;m1:serviceInstance&gt;
+					&lt;m5:definitelyAffectedFlag&gt;true&lt;/m5:definitelyAffectedFlag&gt;
+				&lt;/m1:serviceInstance&gt;
+				&lt;m1:taskCharacteristic&gt;
+					&lt;m1:name&gt;BTJOBPACKURL&lt;/m1:name&gt;
+					&lt;m1:value&gt;
+						&lt;![CDATA[http://10.54.209.97:80/ORjobpackretrievalweb/default.aspx?id=1219866]]&gt;
+					&lt;/m1:value&gt; 
+				&lt;/m1:taskCharacteristic&gt;
+				&lt;m1:taskCharacteristic&gt;
+					&lt;m1:name&gt;JOBTYPEID&lt;/m1:name&gt;
+					&lt;m1:value&gt;COMPBDUK&lt;/m1:value&gt;
+				&lt;/m1:taskCharacteristic&gt;
+				&lt;m1:taskCharacteristic&gt;
+					&lt;m1:name&gt;PROPOSEDIND&lt;/m1:name&gt;
+					&lt;m1:value&gt;P&lt;/m1:value&gt;
+				&lt;/m1:taskCharacteristic&gt;  
+				&lt;m1:taskCharacteristic&gt;
+					&lt;m1:name&gt;GANGDETAILS&lt;/m1:name&gt;
+					&lt;m1:value&gt;
+						&lt;![CDATA[000000000+000000000+0000000+true]]&gt;
+					&lt;/m1:value&gt;
+				&lt;/m1:taskCharacteristic&gt;
+				&lt;m1:taskCharacteristic&gt; 
+					&lt;m1:name&gt;UPSTREAMDATABANDWIDTH&lt;/m1:name&gt; 
+					&lt;m1:value/&gt; 
+				&lt;/m1:taskCharacteristic&gt; 
+				&lt;m1:taskCharacteristic&gt; 
+					&lt;m1:name&gt;DOWNSTREAMDATABANDWIDTH&lt;/m1:name&gt; 
+					&lt;m1:value/&gt; 
+				&lt;/m1:taskCharacteristic&gt; 
+				&lt;m1:taskCharacteristic&gt;
+					&lt;m1:name&gt;UPDATETASKSTATUSREQUEST&lt;/m1:name&gt;
+					&lt;m1:value&gt;False&lt;/m1:value&gt;
+				&lt;/m1:taskCharacteristic&gt;
+				&lt;m1:taskCharacteristic&gt;
+					&lt;m1:name&gt;Rplusidentifier&lt;/m1:name&gt;
+					&lt;m1:value&gt;N&lt;/m1:value&gt;
+				&lt;/m1:taskCharacteristic&gt;
+				&lt;m1:taskCharacteristic&gt;
+					&lt;m1:name&gt;Rplusfunction&lt;/m1:name&gt;
+					&lt;m1:value&gt;Z&lt;/m1:value&gt;
+				&lt;/m1:taskCharacteristic&gt;
+				&lt;m1:taskCharacteristic&gt;
+					&lt;m1:name&gt;VisualiserDataAvailable&lt;/m1:name&gt; 
+					&lt;m1:value&gt;N&lt;/m1:value&gt; 
+				&lt;/m1:taskCharacteristic&gt;
+				&lt;m1:taskInstallation&gt;
+					&lt;m1:id&gt;-011&lt;/m1:id&gt;
+				&lt;/m1:taskInstallation&gt;
+				&lt;m1:taskSpecification&gt;
+					&lt;m1:skillSpecification&gt; 
+						&lt;m8:id&gt;AJFS&lt;/m8:id&gt; 
+						&lt;m8:type&gt;PRIMARY&lt;/m8:type&gt;  
+						&lt;m8:skillDuration&gt;00004&lt;/m8:skillDuration&gt; 
+						&lt;m8:numberOfPeople&gt;1&lt;/m8:numberOfPeople&gt; 
+					&lt;/m1:skillSpecification&gt; 
+				&lt;/m1:taskSpecification&gt;
+				&lt;m1:taskCharge/&gt;
+				&lt;m1:resourceRequirements&gt;
+					&lt;m1:minResourceNumber&gt;1&lt;/m1:minResourceNumber&gt;
+					&lt;m1:maxResourceNumber&gt;2&lt;/m1:maxResourceNumber&gt;
+					&lt;m1:optimumResourceNumber&gt;2&lt;/m1:optimumResourceNumber&gt;
+					&lt;m1:resourceType&gt;ENGINEER&lt;/m1:resourceType&gt;
+				&lt;/m1:resourceRequirements&gt;
+			&lt;/m:task&gt;
+		&lt;/m:amendTaskRequest&gt;
+	&lt;/SOAP-ENV:Body&gt;
+&lt;/SOAP-ENV:Envelope&gt;</stringProp>
+            <stringProp name="AMQPPublisher.MessageType"></stringProp>
+            <stringProp name="AMQPPublisher.ReplyToQueue"></stringProp>
+            <stringProp name="AMQPPublisher.CorrelationId"></stringProp>
+            <stringProp name="AMQPPublisher.ContentType"></stringProp>
+            <stringProp name="AMQPPublisher.MessageId"></stringProp>
+            <elementProp name="AMQPPublisher.Headers" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+              <collectionProp name="Arguments.arguments">
+                <elementProp name="x-dead-letter-exchange" elementType="Argument">
+                  <stringProp name="Argument.name">x-dead-letter-exchange</stringProp>
+                  <stringProp name="Argument.value">SourceExchange</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+                <elementProp name="x-dead-letter-routing-key" elementType="Argument">
+                  <stringProp name="Argument.name">x-dead-letter-routing-key</stringProp>
+                  <stringProp name="Argument.value">ewocs_to_metb_inb_h_rkey</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+                <elementProp name="x-max-length" elementType="Argument">
+                  <stringProp name="Argument.name">x-max-length</stringProp>
+                  <stringProp name="Argument.value">1000000</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+              </collectionProp>
+            </elementProp>
+          </com.zeroclue.jmeter.protocol.amqp.AMQPPublisher>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="AMEND_RECEIVED_MESSAGES" enabled="true">
+            <stringProp name="TestPlan.comments">Check if entry is made in RECEIVED_MESSAGES table</stringProp>
+            <stringProp name="dataSource">METB</stringProp>
+            <stringProp name="queryType">Select Statement</stringProp>
+            <stringProp name="query">select * from RECEIVED_MESSAGES where TASK_IDENTIFIER=&apos;${taskId}&apos; AND TYPE_OF_REQUEST=&apos;AmendTaskRequest&apos;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable">received_message_amend</stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as Object</stringProp>
+          </JDBCSampler>
+          <hashTree>
+            <BeanShellTimer guiclass="TestBeanGUI" testclass="BeanShellTimer" testname="BeanShell Timer" enabled="true">
+              <boolProp name="resetInterpreter">false</boolProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="script">Integer sleep = 30000;
+
+log.info( &quot;Sleep for &quot; + sleep.toString() + &quot; milli-seconds&quot; );
+return sleep;</stringProp>
+            </BeanShellTimer>
+            <hashTree/>
+            <BeanShellAssertion guiclass="BeanShellAssertionGui" testclass="BeanShellAssertion" testname="BeanShell Assertion" enabled="true">
+              <stringProp name="BeanShellAssertion.query">if(vars.getObject(&quot;received_message_amend&quot;).size() != 0) {
+	log.info(&quot;TASK ID Validation Completed&quot;);
+} else {
+	FailureMessage = &quot;FAILED. AMEND Task not found in METB TaskDetails Table for Task ID: ${taskId}&quot;;
+	Failure = true;	
+	prev.setStopThread(true); 
+}</stringProp>
+              <stringProp name="BeanShellAssertion.filename"></stringProp>
+              <stringProp name="BeanShellAssertion.parameters"></stringProp>
+              <boolProp name="BeanShellAssertion.resetInterpreter">false</boolProp>
+            </BeanShellAssertion>
+            <hashTree/>
+            <ResultAction guiclass="ResultActionGui" testclass="ResultAction" testname="Result Status Action Handler" enabled="true">
+              <intProp name="OnError.action">2</intProp>
+            </ResultAction>
+            <hashTree/>
+          </hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="EWOCS_AMEND_TASKSTATUS_Check" enabled="true">
+            <stringProp name="TestPlan.comments">Check if entry is made in TASKSTATUS table</stringProp>
+            <stringProp name="dataSource">METB</stringProp>
+            <stringProp name="queryType">Select Statement</stringProp>
+            <stringProp name="query">SELECT * FROM TASKDETAILS WHERE TASK_REF_NUMBER=&apos;${taskId}&apos;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable">taskdetails</stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as Object</stringProp>
+          </JDBCSampler>
+          <hashTree>
+            <BeanShellAssertion guiclass="BeanShellAssertionGui" testclass="BeanShellAssertion" testname="BeanShell Assertion" enabled="true">
+              <stringProp name="BeanShellAssertion.query">if(vars.getObject(&quot;taskdetails&quot;).size() != 0) {
+	String met_ref_number = vars.getObject(&quot;taskdetails&quot;).get(0).get(&quot;MET_REF_NUMBER&quot;);
+	vars.put(&quot;met_ref_number&quot;,met_ref_number);
+	log.info(&quot;MET_REF_NUMBER Value &gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; &quot; + met_ref_number);
+} else {
+	FailureMessage = &quot;FAILED. AMEND Task not found in METB TaskDetails Table for Task ID: ${taskId}&quot;;
+	Failure = true;	
+	prev.setStopThread(true); 
+}</stringProp>
+              <stringProp name="BeanShellAssertion.filename"></stringProp>
+              <stringProp name="BeanShellAssertion.parameters"></stringProp>
+              <boolProp name="BeanShellAssertion.resetInterpreter">false</boolProp>
+            </BeanShellAssertion>
+            <hashTree/>
+            <ResultAction guiclass="ResultActionGui" testclass="ResultAction" testname="Result Status Action Handler" enabled="true">
+              <intProp name="OnError.action">2</intProp>
+            </ResultAction>
+            <hashTree/>
+          </hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="AMEND_AGGREGATION_REQUEST_EMPPAL_Check" enabled="true">
+            <stringProp name="TestPlan.comments">Check if entry is made in taskdetails_agg_message table for EMPPAL</stringProp>
+            <stringProp name="dataSource">METB</stringProp>
+            <stringProp name="queryType">Select Statement</stringProp>
+            <stringProp name="query">select * from taskdetails_agg_message WHERE MET_REF_NUMBER=&apos;${met_ref_number}&apos; AND MESSAGE_TYPE=&apos;AGG_REQ&apos; and TYPE_OF_AGGREGATION=&apos;EMPPAL&apos;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable">taskdetails_agg</stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as Object</stringProp>
+          </JDBCSampler>
+          <hashTree>
+            <BeanShellAssertion guiclass="BeanShellAssertionGui" testclass="BeanShellAssertion" testname="BeanShell Assertion" enabled="true">
+              <stringProp name="BeanShellAssertion.query">if(vars.getObject(&quot;taskdetails_agg&quot;).size() != 0) {
+	log.info(&quot;EMPPAL REQUEST SENT &gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; &quot;);
+} else {
+	FailureMessage = &quot;FAILED. EMPPAL Request not sent for MET_REF_NUMBER: ${met_ref_number}&quot;;
+	Failure = true;	
+	prev.setStopThread(true); 
+}</stringProp>
+              <stringProp name="BeanShellAssertion.filename"></stringProp>
+              <stringProp name="BeanShellAssertion.parameters"></stringProp>
+              <boolProp name="BeanShellAssertion.resetInterpreter">false</boolProp>
+            </BeanShellAssertion>
+            <hashTree/>
+            <ResultAction guiclass="ResultActionGui" testclass="ResultAction" testname="Result Status Action Handler" enabled="true">
+              <intProp name="OnError.action">2</intProp>
+            </ResultAction>
+            <hashTree/>
+          </hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="AMEND_AGGREGATION_RESPONSE_EMPPAL_Check" enabled="true">
+            <stringProp name="TestPlan.comments">Check if entry is made in taskdetails table for EMPPAL Response</stringProp>
+            <stringProp name="dataSource">METB</stringProp>
+            <stringProp name="queryType">Select Statement</stringProp>
+            <stringProp name="query">SELECT * FROM AGGREGATION_DATA WHERE AGGREGATION=&apos;EMPPAL&apos; AND KEY=&apos;emppalResponse&apos; and MET_REF_NUMBER=&apos;${met_ref_number}&apos;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable">taskdetails_res</stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as Object</stringProp>
+          </JDBCSampler>
+          <hashTree>
+            <BeanShellAssertion guiclass="BeanShellAssertionGui" testclass="BeanShellAssertion" testname="BeanShell Assertion" enabled="true">
+              <stringProp name="BeanShellAssertion.query">if(vars.getObject(&quot;taskdetails_res&quot;).size() != 0) {
+	log.info(&quot;EMPPAL REQUEST RECEIVED &gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; &quot;);
+} else {
+	FailureMessage = &quot;FAILED. RESPONSE not received from EMPPAL for MET_REF_NUMBER: ${met_ref_number}&quot;;
+	Failure = true;	
+	prev.setStopThread(true); 
+}</stringProp>
+              <stringProp name="BeanShellAssertion.filename"></stringProp>
+              <stringProp name="BeanShellAssertion.parameters"></stringProp>
+              <boolProp name="BeanShellAssertion.resetInterpreter">false</boolProp>
+            </BeanShellAssertion>
+            <hashTree/>
+            <ResultAction guiclass="ResultActionGui" testclass="ResultAction" testname="Result Status Action Handler" enabled="true">
+              <intProp name="OnError.action">2</intProp>
+            </ResultAction>
+            <hashTree/>
+          </hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="AMEND_WM_REQUEST_Check" enabled="true">
+            <stringProp name="TestPlan.comments">Check if entry is made in taskdetails table for WM Request</stringProp>
+            <stringProp name="dataSource">METB</stringProp>
+            <stringProp name="queryType">Select Statement</stringProp>
+            <stringProp name="query">SELECT * FROM WM_MESSAGES WHERE task_identifier=&apos;${met_ref_number}&apos; AND SOURCE_SYSTEM=&apos;EWOEO&apos; AND TYPE_OF_REQUEST=&apos;taskModify&apos;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable">wm_req</stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as Object</stringProp>
+          </JDBCSampler>
+          <hashTree>
+            <BeanShellAssertion guiclass="BeanShellAssertionGui" testclass="BeanShellAssertion" testname="BeanShell Assertion" enabled="true">
+              <stringProp name="BeanShellAssertion.query">if(vars.getObject(&quot;wm_req&quot;).size() != 0) {
+	log.info(&quot;WM REQUEST SENT &gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; &quot;);
+} else {
+	FailureMessage = &quot;FAILED. Request not sent to WM for MET_REF_NUMBER: ${met_ref_number}&quot;;
+	Failure = true;	
+	prev.setStopThread(true); 
+}</stringProp>
+              <stringProp name="BeanShellAssertion.filename"></stringProp>
+              <stringProp name="BeanShellAssertion.parameters"></stringProp>
+              <boolProp name="BeanShellAssertion.resetInterpreter">false</boolProp>
+            </BeanShellAssertion>
+            <hashTree/>
+            <ResultAction guiclass="ResultActionGui" testclass="ResultAction" testname="Result Status Action Handler" enabled="true">
+              <intProp name="OnError.action">2</intProp>
+            </ResultAction>
+            <hashTree/>
+          </hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="AMEND_WM_RESPONSE_Check" enabled="true">
+            <stringProp name="TestPlan.comments">Check if entry is made in taskdetails table for WM RESPONSE</stringProp>
+            <stringProp name="dataSource">METB</stringProp>
+            <stringProp name="queryType">Select Statement</stringProp>
+            <stringProp name="query">SELECT * FROM RESPONSE_RECEIVED WHERE MET_REF_NUMBER=&apos;${met_ref_number}&apos; AND SOURCE_SYSTEM=&apos;EWOEO&apos; AND TYPE_OF_RESPONSE=&apos;taskModify&apos;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable">wm_res</stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as Object</stringProp>
+          </JDBCSampler>
+          <hashTree>
+            <BeanShellAssertion guiclass="BeanShellAssertionGui" testclass="BeanShellAssertion" testname="BeanShell Assertion" enabled="true">
+              <stringProp name="BeanShellAssertion.query">if(vars.getObject(&quot;wm_res&quot;).size() != 0) {
+	log.info(&quot;WM RESPONSE RECEIVED &gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; &quot;);
+} else {
+	FailureMessage = &quot;FAILED. Response not received from WM for MET_REF_NUMBER: ${met_ref_number}&quot;;
+	Failure = true;	
+	prev.setStopThread(true); 
+}</stringProp>
+              <stringProp name="BeanShellAssertion.filename"></stringProp>
+              <stringProp name="BeanShellAssertion.parameters"></stringProp>
+              <boolProp name="BeanShellAssertion.resetInterpreter">false</boolProp>
+            </BeanShellAssertion>
+            <hashTree/>
+            <ResultAction guiclass="ResultActionGui" testclass="ResultAction" testname="Result Status Action Handler" enabled="true">
+              <intProp name="OnError.action">2</intProp>
+            </ResultAction>
+            <hashTree/>
+          </hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="AMEND_METB_RESPONSE_Check" enabled="true">
+            <stringProp name="TestPlan.comments">Check if entry is made in taskdetails table for WM RESPONSE</stringProp>
+            <stringProp name="dataSource">METB</stringProp>
+            <stringProp name="queryType">Select Statement</stringProp>
+            <stringProp name="query">	SELECT SENT_MESSAGE FROM RESPONSE_SENT WHERE MET_REF_NUMBER=&apos;${met_ref_number}&apos; AND SOURCE_SYSTEM=&apos;EWOEO&apos; AND TYPE_OF_RESPONSE=&apos;taskModifyResponse&apos;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable">metb_res_amend</stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as Object</stringProp>
+          </JDBCSampler>
+          <hashTree>
+            <BeanShellAssertion guiclass="BeanShellAssertionGui" testclass="BeanShellAssertion" testname="BeanShell Assertion" enabled="true">
+              <stringProp name="BeanShellAssertion.query">if(vars.getObject(&quot;metb_res_amend&quot;).size() != 0) {
+	log.info(&quot;RESPONSE SENT &gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; &quot;);
+	//String sent_message = vars.getObject(&quot;metb_res&quot;).get(0).get(&quot;SENT_MESSAGE&quot;).characterStream?.text;
+	//vars.put(&quot;sent_message&quot;,sent_message);
+	//log.info(&quot;Value from CLOB field: &quot; + sent_message);
+} else {
+	FailureMessage = &quot;FAILED. Response not SENT to EWOCS for MET_REF_NUMBER: ${met_ref_number}&quot;;
+	Failure = true;	
+	prev.setStopThread(true); 
+}</stringProp>
+              <stringProp name="BeanShellAssertion.filename"></stringProp>
+              <stringProp name="BeanShellAssertion.parameters"></stringProp>
+              <boolProp name="BeanShellAssertion.resetInterpreter">false</boolProp>
+            </BeanShellAssertion>
+            <hashTree/>
+            <ResultAction guiclass="ResultActionGui" testclass="ResultAction" testname="Result Status Action Handler" enabled="true">
+              <intProp name="OnError.action">2</intProp>
+            </ResultAction>
+            <hashTree/>
+          </hashTree>
+        </hashTree>
+        <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="${request_Type} CANCEL TC" enabled="true">
+          <boolProp name="TransactionController.includeTimers">false</boolProp>
+          <boolProp name="TransactionController.parent">true</boolProp>
+        </TransactionController>
+        <hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="EWOCS_GET_CANCEL_CONFIG" enabled="true">
+            <stringProp name="TestPlan.comments">Fetch METB Configuration</stringProp>
+            <stringProp name="dataSource">METB</stringProp>
+            <stringProp name="query">SELECT * FROM METB_ART_CONFIG WHERE testid=&apos;EWOTC01&apos;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="queryType">Select Statement</stringProp>
+            <stringProp name="resultSetHandler">Store as Object</stringProp>
+            <stringProp name="resultVariable">sanityCheckConfig</stringProp>
+            <stringProp name="variableNames"></stringProp>
+          </JDBCSampler>
+          <hashTree>
+            <BeanShellAssertion guiclass="BeanShellAssertionGui" testclass="BeanShellAssertion" testname="BeanShell Assertion" enabled="true">
+              <stringProp name="BeanShellAssertion.query">try {
+	if(vars.getObject(&quot;sanityCheckConfig&quot;).size() != 0) {
+	String taskId = vars.getObject(&quot;sanityCheckConfig&quot;).get(0).get(&quot;TASK_ID&quot;);
+	String taskType = vars.getObject(&quot;sanityCheckConfig&quot;).get(0).get(&quot;TASK_TYPE&quot;);
+	String product = vars.getObject(&quot;sanityCheckConfig&quot;).get(0).get(&quot;PRODUCT&quot;);
+	vars.put(&quot;taskId&quot;,taskId);
+	vars.put(&quot;taskType&quot;,taskType);
+	vars.put(&quot;product&quot;,product);
+	${__setProperty(globalTaskId, taskId)};
+	${__setProperty(globalTaskType, taskType)};
+	${__setProperty(globalProduct, product)};
+	log.info(&quot;TaskId Value &gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; &quot; + taskId);
+	log.info(&quot;Task Type Value &gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; &quot; + taskType);
+	log.info(&quot;Product Value &gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; &quot; + product);
+	String overAllDelay = vars.getObject(&quot;sanityCheckConfig&quot;).get(0).get(&quot;OVERALL_DELAY&quot;);
+	vars.put(&quot;overAllDelay&quot;,overAllDelay);
+	log.info(&quot;overAllDelay Value &gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; &quot; + overAllDelay);	
+} else {
+	FailureMessage = &quot;FAILED. Please configure TEST CONFIGURATIONS for EWOCS in METB_ART_CONFIG&quot;;
+	Failure = true;	
+	prev.setStopThread(true); 
+}
+}
+catch (Throwable ex) {
+    log.error(&quot;Error in Beanshell&quot;, ex);
+    throw ex;
+}</stringProp>
+              <stringProp name="BeanShellAssertion.filename"></stringProp>
+              <stringProp name="BeanShellAssertion.parameters"></stringProp>
+              <boolProp name="BeanShellAssertion.resetInterpreter">true</boolProp>
+            </BeanShellAssertion>
+            <hashTree/>
+            <ResultAction guiclass="ResultActionGui" testclass="ResultAction" testname="Result Status Action Handler" enabled="true">
+              <intProp name="OnError.action">2</intProp>
+            </ResultAction>
+            <hashTree/>
+          </hashTree>
+          <com.zeroclue.jmeter.protocol.amqp.AMQPPublisher guiclass="com.zeroclue.jmeter.protocol.amqp.gui.AMQPPublisherGui" testclass="com.zeroclue.jmeter.protocol.amqp.AMQPPublisher" testname="EWOCS_Cancel_Task_Request" enabled="true">
+            <stringProp name="AMQPSampler.Exchange">SourceExchange</stringProp>
+            <boolProp name="AMQPSampler.ExchangeDurable">true</boolProp>
+            <boolProp name="AMQPSampler.ExchangeAutoDelete">false</boolProp>
+            <boolProp name="AMQPSampler.ExchangeRedeclare">false</boolProp>
+            <stringProp name="AMQPSampler.Queue"></stringProp>
+            <stringProp name="AMQPSampler.RoutingKey"></stringProp>
+            <stringProp name="AMQPSampler.VirtualHost">METBVHOST</stringProp>
+            <stringProp name="AMQPSampler.MessageTTL">604800000</stringProp>
+            <stringProp name="AMQPSampler.MessageExpires"></stringProp>
+            <stringProp name="AMQPSampler.ExchangeType">direct</stringProp>
+            <stringProp name="AMQPSampler.QueueDurable">true</stringProp>
+            <stringProp name="AMQPSampler.QueueExclusive">false</stringProp>
+            <stringProp name="AMQPSampler.QueueAutoDelete">false</stringProp>
+            <boolProp name="AMQPSampler.Redeclare">false</boolProp>
+            <stringProp name="AMQPSampler.Timeout">1000</stringProp>
+            <stringProp name="AMQPSampler.Iterations">1</stringProp>
+            <stringProp name="AMQPSampler.Host">10.54.210.59</stringProp>
+            <stringProp name="AMQPSampler.Port">5672</stringProp>
+            <stringProp name="AMQPSampler.Username">admin</stringProp>
+            <stringProp name="AMQPSampler.Password">password</stringProp>
+            <stringProp name="AMQPSampler.SSL">false</stringProp>
+            <boolProp name="AMQPPublisher.Persistent">false</boolProp>
+            <boolProp name="AMQPPublisher.UseTx">false</boolProp>
+            <stringProp name="AMQPPublisher.MessageRoutingKey">ewocs_to_metb_inb_rkey</stringProp>
+            <stringProp name="AMQPPublisher.Message">&lt;SOAP-ENV:Envelope xmlns:SOAP-ENV=&quot;http://schemas.xmlsoap.org/soap/envelope/&quot; xmlns:SOAP-ENC=&quot;http://schemas.xmlsoap.org/soap/encoding/&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:xsd=&quot;http://www.w3.org/2001/XMLSchema&quot; xmlns:m0=&quot;http://wsi.nat.bt.com/2005/06/StandardHeader/&quot; xmlns:m1=&quot;http://capabilities.nat.bt.com/xsd/ManageEngineeringTask/2008/06/30/CCM/CancelTaskRequest/Activities&quot; xmlns:m2=&quot;http://capabilities.nat.bt.com/xsd/ManageEngineeringTask/2008/06/30/CCM/CancelTaskRequest/Incidents&quot; xmlns:m3=&quot;http://capabilities.nat.bt.com/xsd/ManageEngineeringTask/2008/06/30/CCM/CancelTaskRequest/Agreements&quot; xmlns:m4=&quot;http://capabilities.nat.bt.com/xsd/ManageEngineeringTask/2008/06/30/CCM/CancelTaskRequest/Portfolio&quot; xmlns:m5=&quot;http://capabilities.nat.bt.com/xsd/ManageEngineeringTask/2008/06/30/CCM/CancelTaskRequest/Services&quot; xmlns:m6=&quot;http://capabilities.nat.bt.com/xsd/ManageEngineeringTask/2008/06/30/CCM/CancelTaskRequest/CoreClasses/Specifications&quot; xmlns:m7=&quot;http://capabilities.nat.bt.com/xsd/ManageEngineeringTask/2008/06/30/CCM/CancelTaskRequest/BaseTypes&quot; xmlns:m8=&quot;http://capabilities.nat.bt.com/xsd/ManageEngineeringTask/2008/06/30/CCM/CancelTaskRequest/HR&quot; xmlns:m9=&quot;http://capabilities.nat.bt.com/xsd/ManageEngineeringTask/2008/06/30/CCM/CancelTaskRequest/Scheduling&quot; xmlns:m10=&quot;http://capabilities.nat.bt.com/xsd/ManageEngineeringTask/2008/06/30/CCM/CancelTaskRequest/Parties&quot; xmlns:m11=&quot;http://capabilities.nat.bt.com/xsd/ManageEngineeringTask/2008/06/30/CCM/CancelTaskRequest/Places&quot; xmlns:m12=&quot;http://capabilities.nat.bt.com/xsd/ManageEngineeringTask/2008/06/30/CCM/CancelTaskRequest/MTOSI&quot; xmlns:m13=&quot;http://capabilities.nat.bt.com/xsd/ManageEngineeringTask/2008/06/30/CCM/CancelTaskRequest/MTOSI/Structs&quot; xmlns:m14=&quot;http://capabilities.nat.bt.com/xsd/ManageEngineeringTask/2008/06/30/CCM/CancelTaskRequest/MTOSI/Enums&quot; xmlns:m15=&quot;http://capabilities.nat.bt.com/xsd/ManageEngineeringTask/2008/06/30/CCM/CancelTaskRequest/OperationalAnalysis&quot; xmlns:m16=&quot;http://capabilities.nat.bt.com/xsd/ManageEngineeringTask/2008/06/30/CCM/CancelTaskRequest/Interaction&quot; xmlns:m17=&quot;http://capabilities.nat.bt.com/xsd/ManageEngineeringTask/2008/06/30/CCM/CancelTaskRequest/Users&quot; xmlns:m18=&quot;http://capabilities.nat.bt.com/xsd/ManageEngineeringTask/2008/06/30/CCM/CancelTaskRequest/Parties/PartyRoles/Customer&quot;&gt;
+	&lt;SOAP-ENV:Body&gt;
+		&lt;m:cancelTaskRequest xmlns:m=&quot;http://capabilities.nat.bt.com/xsd/ManageEngineeringTask/2008/06/30&quot;   xsi:schemaLocation=&quot;http://capabilities.nat.bt.com/xsd/ManageEngineeringTask/2008/06/30 ManageEngineeringTask.20080630.xsd&quot; &gt;
+			&lt;m0:standardHeader&gt;
+				&lt;m0:e2e&gt;
+					&lt;m0:E2EDATA&gt;E2E.busTxnHdr=PCK0020691&lt;/m0:E2EDATA&gt;
+				&lt;/m0:e2e&gt;
+				&lt;m0:serviceState&gt;
+					&lt;m0:stateCode&gt;OK&lt;/m0:stateCode&gt;
+				&lt;/m0:serviceState&gt;
+				&lt;m0:serviceAddressing&gt;
+					&lt;m0:from&gt;http://ccm.intra.bt.com/EWOCS&lt;/m0:from&gt;
+					&lt;m0:to&gt;
+						&lt;m0:address&gt;http://ccm.intra.bt.com/METsk&lt;/m0:address&gt;
+					&lt;/m0:to&gt;
+					&lt;m0:replyTo&gt;
+						&lt;m0:address&gt;http://ccm.intra.bt.com/EWOCS&lt;/m0:address&gt;
+						&lt;m0:contextItemList&gt;
+							&lt;m0:contextItem contextId=&quot;http://ccm.intra.bt.com/EWOCS&quot; contextName=&quot;serviceType&quot;&gt;EWOCS&lt;/m0:contextItem&gt;
+							&lt;m0:contextItem contextId=&quot;http://ccm.intra.bt.com/EWOCS&quot; contextName=&quot;instanceId&quot;&gt;EO&lt;/m0:contextItem&gt;
+							&lt;m0:contextItem contextId=&quot;http://ccm.intra.bt.com/EWOCS&quot; contextName=&quot;taskIdentifier&quot;&gt;304270&lt;/m0:contextItem&gt;
+						&lt;/m0:contextItemList&gt;
+					&lt;/m0:replyTo&gt;
+					&lt;m0:messageId&gt;43275812&lt;/m0:messageId&gt;
+					&lt;m0:serviceName&gt;http://capabilities.nat.bt.com/ManageEngineeringTask&lt;/m0:serviceName&gt;
+					&lt;m0:action&gt;http://capabilities.intra.bt.com/ManageEngineeringTask#CancelTaskRequest&lt;/m0:action&gt;
+				&lt;/m0:serviceAddressing&gt;
+				&lt;m0:serviceSpecification&gt;
+					&lt;m0:payloadFormat&gt;XML&lt;/m0:payloadFormat&gt;
+					&lt;m0:version&gt;1.0&lt;/m0:version&gt;
+					&lt;m0:revision&gt;0&lt;/m0:revision&gt;
+				&lt;/m0:serviceSpecification&gt;
+			&lt;/m0:standardHeader&gt;
+			&lt;m:task&gt;
+				&lt;m1:amendmentReason&gt;Cancelled By Ewocs job flow&lt;/m1:amendmentReason&gt;
+				&lt;m1:jIN&gt;
+					&lt;m1:name&gt;TASKIDENTIFIER&lt;/m1:name&gt;
+					&lt;m1:value&gt;${taskId}&lt;/m1:value&gt;
+				&lt;/m1:jIN&gt;
+				&lt;m1:associateTask&gt;
+					&lt;m1:name&gt;WMREFERENCENUMBER&lt;/m1:name&gt;
+					&lt;m1:value&gt;LFSC/GPK72Y&lt;/m1:value&gt;
+				&lt;/m1:associateTask&gt;
+				&lt;m1:taskCategory&gt;
+					&lt;m1:name&gt;${taskType}&lt;/m1:name&gt;
+				&lt;/m1:taskCategory&gt;
+				&lt;m1:problem&gt;
+					&lt;m2:problemCategory&gt;
+						&lt;m2:productType&gt;${product}&lt;/m2:productType&gt;
+					&lt;/m2:problemCategory&gt;
+				&lt;/m1:problem&gt;
+				&lt;m1:taskRole&gt;
+					&lt;m1:name&gt;LOB&lt;/m1:name&gt;
+					&lt;m1:value&gt;Openreach&lt;/m1:value&gt;
+				&lt;/m1:taskRole&gt;
+			&lt;/m:task&gt;
+		&lt;/m:cancelTaskRequest&gt;
+	&lt;/SOAP-ENV:Body&gt;
+&lt;/SOAP-ENV:Envelope&gt;</stringProp>
+            <stringProp name="AMQPPublisher.MessageType"></stringProp>
+            <stringProp name="AMQPPublisher.ReplyToQueue"></stringProp>
+            <stringProp name="AMQPPublisher.CorrelationId"></stringProp>
+            <stringProp name="AMQPPublisher.ContentType"></stringProp>
+            <stringProp name="AMQPPublisher.MessageId"></stringProp>
+            <elementProp name="AMQPPublisher.Headers" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+              <collectionProp name="Arguments.arguments">
+                <elementProp name="x-dead-letter-exchange" elementType="Argument">
+                  <stringProp name="Argument.name">x-dead-letter-exchange</stringProp>
+                  <stringProp name="Argument.value">SourceExchange</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+                <elementProp name="x-dead-letter-routing-key" elementType="Argument">
+                  <stringProp name="Argument.name">x-dead-letter-routing-key</stringProp>
+                  <stringProp name="Argument.value">ewocs_to_metb_inb_h_rkey</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+                <elementProp name="x-max-length" elementType="Argument">
+                  <stringProp name="Argument.name">x-max-length</stringProp>
+                  <stringProp name="Argument.value">1000000</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+              </collectionProp>
+            </elementProp>
+          </com.zeroclue.jmeter.protocol.amqp.AMQPPublisher>
+          <hashTree/>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CANCEL_RECEIVED_MESSAGES" enabled="true">
+            <stringProp name="TestPlan.comments">Check if entry is made in RECEIVED_MESSAGES table</stringProp>
+            <stringProp name="dataSource">METB</stringProp>
+            <stringProp name="queryType">Select Statement</stringProp>
+            <stringProp name="query">select * from RECEIVED_MESSAGES where TASK_IDENTIFIER=&apos;${taskId}&apos; AND TYPE_OF_REQUEST=&apos;CancelTaskRequest&apos;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable">received_message_cancel</stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as Object</stringProp>
+          </JDBCSampler>
+          <hashTree>
+            <BeanShellTimer guiclass="TestBeanGUI" testclass="BeanShellTimer" testname="BeanShell Timer" enabled="true">
+              <boolProp name="resetInterpreter">false</boolProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="script">Integer sleep = 30000;
+
+log.info( &quot;Sleep for &quot; + sleep.toString() + &quot; milli-seconds&quot; );
+return sleep;</stringProp>
+            </BeanShellTimer>
+            <hashTree/>
+            <BeanShellAssertion guiclass="BeanShellAssertionGui" testclass="BeanShellAssertion" testname="BeanShell Assertion" enabled="true">
+              <stringProp name="BeanShellAssertion.query">if(vars.getObject(&quot;received_message_cancel&quot;).size() != 0) {
+	log.info(&quot;TASK ID Validation Completed&quot;);
+} else {
+	FailureMessage = &quot;FAILED. CANCEL Task not found in METB TaskDetails Table for Task ID: ${taskId}&quot;;
+	Failure = true;	
+	prev.setStopThread(true); 
+}</stringProp>
+              <stringProp name="BeanShellAssertion.filename"></stringProp>
+              <stringProp name="BeanShellAssertion.parameters"></stringProp>
+              <boolProp name="BeanShellAssertion.resetInterpreter">false</boolProp>
+            </BeanShellAssertion>
+            <hashTree/>
+            <ResultAction guiclass="ResultActionGui" testclass="ResultAction" testname="Result Status Action Handler" enabled="true">
+              <intProp name="OnError.action">2</intProp>
+            </ResultAction>
+            <hashTree/>
+          </hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CANCEL_TASKSTATUS_Check" enabled="true">
+            <stringProp name="TestPlan.comments">Check if entry is made in TASKSTATUS table</stringProp>
+            <stringProp name="dataSource">METB</stringProp>
+            <stringProp name="queryType">Select Statement</stringProp>
+            <stringProp name="query">SELECT * FROM TASKDETAILS WHERE TASK_REF_NUMBER=&apos;${taskId}&apos;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable">taskdetails</stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as Object</stringProp>
+          </JDBCSampler>
+          <hashTree>
+            <BeanShellAssertion guiclass="BeanShellAssertionGui" testclass="BeanShellAssertion" testname="BeanShell Assertion" enabled="true">
+              <stringProp name="BeanShellAssertion.query">if(vars.getObject(&quot;taskdetails&quot;).size() != 0) {
+	String met_ref_number = vars.getObject(&quot;taskdetails&quot;).get(0).get(&quot;MET_REF_NUMBER&quot;);
+	vars.put(&quot;met_ref_number&quot;,met_ref_number);
+	log.info(&quot;MET_REF_NUMBER Value &gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; &quot; + met_ref_number);
+} else {
+	FailureMessage = &quot;FAILED. CANCEL Task not found in METB TaskDetails Table for Task ID: ${taskId}&quot;;
+	Failure = true;	
+	prev.setStopThread(true); 
+}</stringProp>
+              <stringProp name="BeanShellAssertion.filename"></stringProp>
+              <stringProp name="BeanShellAssertion.parameters"></stringProp>
+              <boolProp name="BeanShellAssertion.resetInterpreter">false</boolProp>
+            </BeanShellAssertion>
+            <hashTree/>
+            <ResultAction guiclass="ResultActionGui" testclass="ResultAction" testname="Result Status Action Handler" enabled="true">
+              <intProp name="OnError.action">2</intProp>
+            </ResultAction>
+            <hashTree/>
+          </hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CANCEL_WM_REQUEST_Check" enabled="true">
+            <stringProp name="TestPlan.comments">Check if entry is made in taskdetails table for WM Request</stringProp>
+            <stringProp name="dataSource">METB</stringProp>
+            <stringProp name="queryType">Select Statement</stringProp>
+            <stringProp name="query">SELECT * FROM WM_MESSAGES WHERE task_identifier=&apos;${met_ref_number}&apos; AND SOURCE_SYSTEM=&apos;EWOEO&apos; AND TYPE_OF_REQUEST=&apos;taskCancel&apos;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable">wm_req</stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as Object</stringProp>
+          </JDBCSampler>
+          <hashTree>
+            <BeanShellAssertion guiclass="BeanShellAssertionGui" testclass="BeanShellAssertion" testname="BeanShell Assertion" enabled="true">
+              <stringProp name="BeanShellAssertion.query">if(vars.getObject(&quot;wm_req&quot;).size() != 0) {
+	log.info(&quot;WM REQUEST SENT &gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; &quot;);
+} else {
+	FailureMessage = &quot;FAILED. Request not sent to WM for MET_REF_NUMBER: ${met_ref_number}&quot;;
+	Failure = true;	
+	prev.setStopThread(true); 
+}</stringProp>
+              <stringProp name="BeanShellAssertion.filename"></stringProp>
+              <stringProp name="BeanShellAssertion.parameters"></stringProp>
+              <boolProp name="BeanShellAssertion.resetInterpreter">false</boolProp>
+            </BeanShellAssertion>
+            <hashTree/>
+            <ResultAction guiclass="ResultActionGui" testclass="ResultAction" testname="Result Status Action Handler" enabled="true">
+              <intProp name="OnError.action">2</intProp>
+            </ResultAction>
+            <hashTree/>
+          </hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CANCEL_WM_RESPONSE_Check" enabled="true">
+            <stringProp name="TestPlan.comments">Check if entry is made in taskdetails table for WM RESPONSE</stringProp>
+            <stringProp name="dataSource">METB</stringProp>
+            <stringProp name="queryType">Select Statement</stringProp>
+            <stringProp name="query">SELECT * FROM RESPONSE_RECEIVED WHERE MET_REF_NUMBER=&apos;${met_ref_number}&apos; AND SOURCE_SYSTEM=&apos;EWOEO&apos; AND TYPE_OF_RESPONSE=&apos;taskCancel&apos;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable">wm_res</stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as Object</stringProp>
+          </JDBCSampler>
+          <hashTree>
+            <BeanShellAssertion guiclass="BeanShellAssertionGui" testclass="BeanShellAssertion" testname="BeanShell Assertion" enabled="true">
+              <stringProp name="BeanShellAssertion.query">if(vars.getObject(&quot;wm_res&quot;).size() != 0) {
+	log.info(&quot;WM RESPONSE RECEIVED &gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; &quot;);
+} else {
+	FailureMessage = &quot;FAILED. Response not received from WM for MET_REF_NUMBER: ${met_ref_number}&quot;;
+	Failure = true;	
+	prev.setStopThread(true); 
+}</stringProp>
+              <stringProp name="BeanShellAssertion.filename"></stringProp>
+              <stringProp name="BeanShellAssertion.parameters"></stringProp>
+              <boolProp name="BeanShellAssertion.resetInterpreter">false</boolProp>
+            </BeanShellAssertion>
+            <hashTree/>
+            <ResultAction guiclass="ResultActionGui" testclass="ResultAction" testname="Result Status Action Handler" enabled="true">
+              <intProp name="OnError.action">2</intProp>
+            </ResultAction>
+            <hashTree/>
+          </hashTree>
+          <JDBCSampler guiclass="TestBeanGUI" testclass="JDBCSampler" testname="CANCEL_METB_RESPONSE_Check" enabled="true">
+            <stringProp name="TestPlan.comments">Check if entry is made in taskdetails table for WM RESPONSE</stringProp>
+            <stringProp name="dataSource">METB</stringProp>
+            <stringProp name="queryType">Select Statement</stringProp>
+            <stringProp name="query">	SELECT SENT_MESSAGE FROM RESPONSE_SENT WHERE MET_REF_NUMBER=&apos;${met_ref_number}&apos; AND SOURCE_SYSTEM=&apos;EWOEO&apos; AND TYPE_OF_RESPONSE=&apos;taskCancelResponse&apos;</stringProp>
+            <stringProp name="queryArguments"></stringProp>
+            <stringProp name="queryArgumentsTypes"></stringProp>
+            <stringProp name="variableNames"></stringProp>
+            <stringProp name="resultVariable">metb_res_cancel</stringProp>
+            <stringProp name="queryTimeout"></stringProp>
+            <stringProp name="resultSetHandler">Store as Object</stringProp>
+          </JDBCSampler>
+          <hashTree>
+            <BeanShellAssertion guiclass="BeanShellAssertionGui" testclass="BeanShellAssertion" testname="BeanShell Assertion" enabled="true">
+              <stringProp name="BeanShellAssertion.query">if(vars.getObject(&quot;metb_res_cancel&quot;).size() != 0) {
+	log.info(&quot;WM RESPONSE RECEIVED &gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; &quot;);
+} else {
+	FailureMessage = &quot;FAILED. Response not SENT to EWOCS for MET_REF_NUMBER: ${met_ref_number}&quot;;
+	Failure = true;	
+	prev.setStopThread(true); 
+}</stringProp>
+              <stringProp name="BeanShellAssertion.filename"></stringProp>
+              <stringProp name="BeanShellAssertion.parameters"></stringProp>
+              <boolProp name="BeanShellAssertion.resetInterpreter">false</boolProp>
+            </BeanShellAssertion>
+            <hashTree/>
+            <ResultAction guiclass="ResultActionGui" testclass="ResultAction" testname="Result Status Action Handler" enabled="true">
+              <intProp name="OnError.action">3</intProp>
+            </ResultAction>
+            <hashTree/>
+          </hashTree>
+        </hashTree>
+      </hashTree>
+    </hashTree>
+  </hashTree>
+</jmeterTestPlan>

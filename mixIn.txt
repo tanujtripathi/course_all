@@ -1,0 +1,16 @@
+ObjectMapper mapper = new ObjectMapper();
+                 mapper.configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, false);
+                 mapper.addMixIn(Duration.class, GetPlanDetailsRequestIgnore.class);
+                 mapper.addMixIn(Time.class, GetPlanDetailsRequestIgnore.class);
+                 mapper.addMixIn(URI.class, GetPlanDetailsRequestIgnore.class);
+
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+public interface GetPlanDetailsRequestIgnore {
+
+    @JsonIgnore
+    void setSeconds(int seconds);
+
+    @JsonIgnore
+    void setTime(Calendar date);
+}
