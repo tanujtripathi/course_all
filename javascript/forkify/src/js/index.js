@@ -20,7 +20,7 @@ const controlSearch = async () => {
         // clear the previous searched array and set its valut to ''
         // i.e, document.querySelector('.results__list').value = ''
         searchView.clearResults();
-
+     
         // its an infinite rotating loader
         // elements.results: document.querySelector('.results')
         renderLoader(elements.searchResultsList);
@@ -54,9 +54,6 @@ elements.searchButtons.addEventListener('click', event => {
         const gotoPage = parseInt(btn.dataset.goto, 10); //base 10
 
         searchView.clearResults();
-        document.querySelector('.results').value = '';
-        document.querySelector('.results__list').value = '';
-        document.querySelector('.results__pages').value = '';
 
         searchView.renderResults(state.search.results, gotoPage);
         console.log(gotoPage)

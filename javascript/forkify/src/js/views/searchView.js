@@ -2,7 +2,7 @@ import { elements } from './base';
 
 export const getInput = () => elements.searchInput.value;
 export const clearInput = () => { elements.searchInput.value = '' };
-export const clearResults = () => { elements.searchResultsList.value = '' , elements.searchButtons.value=''};
+export const clearResults = () => { elements.searchResultsList.innerHTML = '' , elements.searchButtons.innerHTML=''};
 
 export const renderRecipe = recipe => {
     const markup = `<li>
@@ -98,7 +98,7 @@ export const renderButtons = (page, numResults, resPerPage) => {
 
 }
 
-export const renderResults = (recipes, page = 1, resultsPerPage = 10) => {
+export const renderResults = (recipes, page = 1, resultsPerPage = 5) => {
     const start = (page - 1) * resultsPerPage;
     const end = start + resultsPerPage;
     recipes.slice(start, end).forEach(renderRecipe);
